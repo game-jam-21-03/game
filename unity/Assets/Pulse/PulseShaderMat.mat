@@ -29,8 +29,8 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Floats:
     - _LeadSharp: 25
-    - _PulseDistance: 4.0981073
-    - _PulseWidth: 0.5
+    - _PulseDistance: 10.427356
+    - _PulseWidth: 1
     m_Colors:
     - _HBarColor: {r: 0.5, g: 0.5, b: 0.5, a: 0}
     - _LeadColor: {r: 0.08962262, g: 1, b: 0.9774239, a: 0}

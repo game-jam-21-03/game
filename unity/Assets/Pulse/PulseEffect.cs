@@ -2,9 +2,12 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PulseEffect : MonoBehaviour
 {
+	[SerializeField, HideInInspector] InputActions inputActions;
+
 	public Transform PulseOrigin;
 	public Material[] PulseMat;
 	public float PulseDistance;
@@ -28,9 +31,25 @@ public class PulseEffect : MonoBehaviour
 
 	int test = 0;
 
+	void Awake()
+	{
+		inputActions = new InputActions();
+		inputActions.Gameplay.Enable();
+	}
+
 	void Start() 
 	{
 		//AddPulse(PulseMat[0], PulseOrigin, PulseSpeed);
+		inputActions.Gameplay.EchoPulse.performed += x => SendPulse();
+	}
+
+	private void SendPulse()
+	{
+		_scanning = true;
+		var e = AddPulse(PulseMat[test], PulseOrigin, PulseSpeed);
+		e.EchoPulseDistance = 0;
+		e.EchoPulseOrigin.position = _Camera.transform.position;
+		test = (test + 1) % 2;
 	}
 
 	private Echolocation AddPulse(Material _pulseMat, Transform _pulseOrigin, float _pulseSpeed)
@@ -52,6 +71,7 @@ public class PulseEffect : MonoBehaviour
 
 	void Update()
 	{
+		InputSystem.Update();
 		if (_scanning)
 		{
 			// Do cool shit here
@@ -72,30 +92,19 @@ public class PulseEffect : MonoBehaviour
 				}
 			}
 		}
+		// if (Input.GetMouseButtonDown(0))
+		// {
+		// 	Ray ray = _Camera.ScreenPointToRay(Input.mousePosition);
+		// 	RaycastHit hit;
 
-		// temp key to send a pulse?
-		if (Input.GetKeyDown(KeyCode.P))
-		{
-			_scanning = true;
-			var e = AddPulse(PulseMat[test], PulseOrigin, PulseSpeed);
-			e.EchoPulseDistance = 0;
-			e.EchoPulseOrigin.position = Player.transform.position;
-			test = (test + 1) % 2;
-		}
-
-		if (Input.GetMouseButtonDown(0))
-		{
-			Ray ray = _Camera.ScreenPointToRay(Input.mousePosition);
-			RaycastHit hit;
-
-			if (Physics.Raycast(ray, out hit))
-			{
-				_scanning = true;
-				var e = AddPulse(PulseMat[0], PulseOrigin, PulseSpeed);
-				e.EchoPulseDistance = 0;
-				e.EchoPulseOrigin.position = hit.point;
-			}
-		}
+		// 	if (Physics.Raycast(ray, out hit))
+		// 	{
+		// 		_scanning = true;
+		// 		var e = AddPulse(PulseMat[0], PulseOrigin, PulseSpeed);
+		// 		e.EchoPulseDistance = 0;
+		// 		e.EchoPulseOrigin.position = hit.point;
+		// 	}
+		// }
 	}
 
 	[ImageEffectOpaque]
