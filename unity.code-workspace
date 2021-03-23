@@ -1,0 +1,13 @@
+{
+	"folders": [
+		{ "path": "." }
+	],
+
+	"settings": {
+		"files.exclude": {
+			"unity/Library": true,
+			"unity/Logs": true,
+			"unity/Temp": true,
+		}
+	}
+}

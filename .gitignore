@@ -1,0 +1,8 @@
+/unity/Library
+/unity/Logs
+/unity/Temp
+/unity/obj
+/unity/.vs
+/unity/*.csproj
+/unity/*.sln
+**.DS_Store
