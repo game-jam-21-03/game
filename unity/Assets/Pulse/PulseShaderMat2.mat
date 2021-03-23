@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: PulseShaderMat
+  m_Name: PulseShaderMat2
   m_Shader: {fileID: 4800000, guid: 103b2804bc8355a4fb29f7cd14750f09, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
@@ -29,11 +29,11 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Floats:
     - _LeadSharp: 25
-    - _PulseDistance: 4.0981073
+    - _PulseDistance: 3.6266236
     - _PulseWidth: 0.5
     m_Colors:
     - _HBarColor: {r: 0.5, g: 0.5, b: 0.5, a: 0}
-    - _LeadColor: {r: 0.08962262, g: 1, b: 0.9774239, a: 0}
-    - _MidColor: {r: 0.04819329, g: 0.5177489, b: 0.5377358, a: 0}
-    - _TrailColor: {r: 0.9175518, g: 0.24056602, b: 1, a: 0}
+    - _LeadColor: {r: 1, g: 0.042039502, b: 0, a: 0}
+    - _MidColor: {r: 0.4056604, g: 0, b: 0.076882645, a: 0}
+    - _TrailColor: {r: 0.05888931, g: 0, b: 0.066037714, a: 0}
   m_BuildTextureStacks: []

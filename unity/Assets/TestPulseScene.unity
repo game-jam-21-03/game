@@ -807,9 +807,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PulseOrigin: {fileID: 399701014}
-  PulseMat: {fileID: 2100000, guid: 40a0a6529d27bcb4ea3b4a2c1dc75830, type: 2}
+  PulseMat:
+  - {fileID: 2100000, guid: 40a0a6529d27bcb4ea3b4a2c1dc75830, type: 2}
+  - {fileID: 2100000, guid: 4ea975df4ba541142bf4fcce7bad0d61, type: 2}
   PulseDistance: 0
-  PulseSpeed: 10
+  PulseSpeed: 3
   _Camera: {fileID: 2131468163}
   ScannableObjects:
   - {fileID: 184598433}
