@@ -1,157 +1,49 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 public class PulseEffect : MonoBehaviour
 {
-	[SerializeField, HideInInspector] InputActions inputActions;
-
-	public Transform PulseOrigin;
-	public Material[] PulseMat;
-	public float PulseDistance;
-	public float PulseSpeed;
-	public Camera _Camera;
-	public Scannable[] ScannableObjects;
-	public GameObject Player;
-
-	bool _scanning;
-
-	public List<Echolocation> echos = new List<Echolocation>();
-
-	public class Echolocation
-	{
-		public Material EchoPulseMat;
-		public Transform EchoPulseOrigin;
-		public float EchoPulseDistance;
-		public float EchoPulseSpeed;
-		public RenderTexture EchoRenderTexture;
-	}
-
-	int test = 0;
-
-	void Awake()
-	{
-		inputActions = new InputActions();
-		inputActions.Gameplay.Enable();
-	}
-
-	void Start() 
-	{
-		//AddPulse(PulseMat[0], PulseOrigin, PulseSpeed);
-		inputActions.Gameplay.EchoPulse.performed += x => SendPulse();
-	}
-
-	private void SendPulse()
-	{
-		_scanning = true;
-		var e = AddPulse(PulseMat[test], PulseOrigin, PulseSpeed);
-		e.EchoPulseDistance = 0;
-		e.EchoPulseOrigin.position = _Camera.transform.position;
-		test = (test + 1) % 2;
-	}
-
-	private Echolocation AddPulse(Material _pulseMat, Transform _pulseOrigin, float _pulseSpeed)
-	{
-		var e = new Echolocation{
-				EchoPulseMat = _pulseMat,
-				EchoPulseDistance = 0.0f,
-				EchoPulseOrigin = _pulseOrigin,
-				EchoPulseSpeed = _pulseSpeed,
-				EchoRenderTexture = RenderTexture.GetTemporary(1024,1024)};
-		echos.Add(e);
-		return e;
-	}
-
-	void OnEnable() 
-	{
-		_Camera.depthTextureMode = DepthTextureMode.Depth;
-	}
-
-	void Update()
-	{
-		InputSystem.Update();
-		if (_scanning)
-		{
-			// Do cool shit here
-			for(int i = 0; i < echos.Count; i++)
-			{
-				echos[i].EchoPulseDistance += Time.deltaTime * echos[i].EchoPulseSpeed;
-			}
-
-			//PulseDistance += Time.deltaTime * PulseSpeed;
-
-			// probably not efficient to check every object? Not sure?
-			foreach(var s in ScannableObjects)
-			{
-				// If the distance from the pulse origin is within in pulse distance, it has been scanned
-				if(Vector3.Distance(PulseOrigin.position, s.transform.position) <= PulseDistance)
-				{
-					s.ObjectScanned();
-				}
-			}
-		}
-		// if (Input.GetMouseButtonDown(0))
-		// {
-		// 	Ray ray = _Camera.ScreenPointToRay(Input.mousePosition);
-		// 	RaycastHit hit;
-
-		// 	if (Physics.Raycast(ray, out hit))
-		// 	{
-		// 		_scanning = true;
-		// 		var e = AddPulse(PulseMat[0], PulseOrigin, PulseSpeed);
-		// 		e.EchoPulseDistance = 0;
-		// 		e.EchoPulseOrigin.position = hit.point;
-		// 	}
-		// }
-	}
+	public new Camera camera;
 
 	[ImageEffectOpaque]
 	void OnRenderImage(RenderTexture src, RenderTexture dst)
 	{
-		if (echos.Count == 0)
-		{
-			Graphics.Blit(src,dst);
-		}
-		else
-		{
-			RaycastCornerBlit(src, dst, echos);
-		}
+		RaycastCornerBlit(src, dst, Main.Pulses);
 	}
 
-	private void RaycastCornerBlit(RenderTexture src, RenderTexture dest, List<Echolocation> pulses)
+	void RaycastCornerBlit(RenderTexture src, RenderTexture dest, List<Pulse> pulses)
 	{
 		bool swapped = false;
 		foreach(var pulse in pulses)
 		{
-			pulse.EchoPulseMat.SetVector("_WorldSpacePulsePos", pulse.EchoPulseOrigin.position);
+			pulse.EchoPulseMat.SetVector("_WorldSpacePulsePos", pulse.EchoPulseOrigin);
 			pulse.EchoPulseMat.SetFloat("_PulseDistance", pulse.EchoPulseDistance);
+
 			// Compute Frustum Corners
-			float camFar = _Camera.farClipPlane;
-			float camFov = _Camera.fieldOfView;
-			float camAspect = _Camera.aspect;
+			float camFar = camera.farClipPlane;
+			float camFov = camera.fieldOfView;
+			float camAspect = camera.aspect;
 
 			float fovWHalf = camFov * 0.5f;
 
-			Vector3 toRight = _Camera.transform.right * Mathf.Tan(fovWHalf * Mathf.Deg2Rad) * camAspect;
-			Vector3 toTop = _Camera.transform.up * Mathf.Tan(fovWHalf * Mathf.Deg2Rad);
+			Vector3 toRight = camera.transform.right * Mathf.Tan(fovWHalf * Mathf.Deg2Rad) * camAspect;
+			Vector3 toTop = camera.transform.up * Mathf.Tan(fovWHalf * Mathf.Deg2Rad);
 
-			Vector3 topLeft = (_Camera.transform.forward - toRight + toTop);
+			Vector3 topLeft = (camera.transform.forward - toRight + toTop);
 			float camScale = topLeft.magnitude * camFar;
 
 			topLeft.Normalize();
 			topLeft *= camScale;
 
-			Vector3 topRight = (_Camera.transform.forward + toRight + toTop);
+			Vector3 topRight = (camera.transform.forward + toRight + toTop);
 			topRight.Normalize();
 			topRight *= camScale;
 
-			Vector3 bottomRight = (_Camera.transform.forward + toRight - toTop);
+			Vector3 bottomRight = (camera.transform.forward + toRight - toTop);
 			bottomRight.Normalize();
 			bottomRight *= camScale;
 
-			Vector3 bottomLeft = (_Camera.transform.forward - toRight - toTop);
+			Vector3 bottomLeft = (camera.transform.forward - toRight - toTop);
 			bottomLeft.Normalize();
 			bottomLeft *= camScale;
 

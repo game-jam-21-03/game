@@ -1,9 +1,12 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public struct GameState
 {
 	public PlayerState player;
+	public List<Pulse> pulses;
+	public int materialIndex;
 }
 
 public struct PlayerState
@@ -15,6 +18,14 @@ public struct PlayerState
 	public Quaternion forward;
 }
 
+public class Pulse
+{
+	public Material EchoPulseMat;
+	public Vector3 EchoPulseOrigin;
+	public float EchoPulseDistance;
+	public float EchoPulseSpeed;
+}
+
 public class Main : MonoBehaviour
 {
 	// TODO: Move to a spec
@@ -24,21 +35,36 @@ public class Main : MonoBehaviour
 	[SerializeField] float vMax = 10f;
 	[SerializeField] float lookScale = 0.005f;
 
-	// Inspector fields
+	// TODO: Move to a spec
+	[SerializeField] public float PulseSpeed;
+	[SerializeField] public Material PulseMat;
+
+	// TODO: Move to a refs
 	[SerializeField] new Camera camera;
-	[SerializeField] Vector3 cameraOffset = new Vector3(0, 2, 0);
 	[SerializeField] Transform playerTransform;
+	[SerializeField] Scannable[] ScannableObjects;
+
+	// Inspector fields
+	[SerializeField] Vector3 cameraOffset = new Vector3(0, 2, 0);
 
 	// Internal state
 	[SerializeField, HideInInspector] GameState state;
 	[SerializeField, HideInInspector] InputActions inputActions;
 	[SerializeField, HideInInspector] Transform cameraTransform;
 
+	// HACK: Maybe remove this?
+	public static List<Pulse> Pulses;
+
 	void Awake()
 	{
 		inputActions = new InputActions();
 		inputActions.Gameplay.Enable();
+
 		cameraTransform = camera.transform;
+		camera.depthTextureMode = DepthTextureMode.Depth;
+
+		state.pulses = new List<Pulse>();
+		Pulses = state.pulses;
 	}
 
 	void FixedUpdate()
@@ -46,7 +72,6 @@ public class Main : MonoBehaviour
 		float dt = Time.fixedDeltaTime;
 		InputSystem.Update();
 
-		// TODO: Would it be better to store a quaternion rotation instead of yaw and pitch?
 		// Look Direction
 		{
 			ref Vector2 yawPitch = ref state.player.yawPitch;
@@ -93,5 +118,34 @@ public class Main : MonoBehaviour
 			playerTransform.position = p;
 			cameraTransform.position = p + cameraOffset;
 		}
+
+		// Pulses
+		{
+			if (inputActions.Gameplay.EchoPulse.triggered)
+				SendPulse(state.player.position);
+
+			foreach (var p in state.pulses)
+			{
+				p.EchoPulseDistance += dt * p.EchoPulseSpeed;
+				foreach (var s in ScannableObjects)
+				{
+					// If the distance from the pulse origin is within in pulse distance, it has been scanned
+					if (Vector3.Distance(p.EchoPulseOrigin, s.transform.position) <= p.EchoPulseDistance)
+					{
+						s.ObjectScanned();
+					}
+				}
+			}
+		}
+	}
+
+	void SendPulse(Vector3 origin)
+	{
+		var e = new Pulse {
+			EchoPulseMat = PulseMat,
+			EchoPulseDistance = 0.0f,
+			EchoPulseOrigin = origin,
+			EchoPulseSpeed = PulseSpeed };
+		state.pulses.Add(e);
 	}
 }

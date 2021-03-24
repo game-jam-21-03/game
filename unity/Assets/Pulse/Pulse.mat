@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: PulseShaderMat
+  m_Name: Pulse
   m_Shader: {fileID: 4800000, guid: 103b2804bc8355a4fb29f7cd14750f09, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
@@ -29,7 +29,7 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Floats:
     - _LeadSharp: 25
-    - _PulseDistance: 10.427356
+    - _PulseDistance: 96.19968
     - _PulseWidth: 1
     m_Colors:
     - _HBarColor: {r: 0.5, g: 0.5, b: 0.5, a: 0}
