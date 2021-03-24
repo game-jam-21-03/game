@@ -16,8 +16,8 @@ public class PulseEffect : MonoBehaviour
 		bool swapped = false;
 		foreach(var pulse in pulses)
 		{
-			pulse.EchoPulseMat.SetVector("_WorldSpacePulsePos", pulse.EchoPulseOrigin);
-			pulse.EchoPulseMat.SetFloat("_PulseDistance", pulse.EchoPulseDistance);
+			pulse.spec.material.SetVector("_WorldSpacePulsePos", pulse.origin);
+			pulse.spec.material.SetFloat("_PulseDistance", pulse.distanceTraveled);
 
 			// Compute Frustum Corners
 			float camFar = camera.farClipPlane;
@@ -50,12 +50,12 @@ public class PulseEffect : MonoBehaviour
 			// Custom Blit, encoding Frustum Corners as additional Texture Coordinates
 			RenderTexture.active = dest;
 
-			pulse.EchoPulseMat.SetTexture("_MainTex", src);
+			pulse.spec.material.SetTexture("_MainTex", src);
 
 			GL.PushMatrix();
 			GL.LoadOrtho();
 
-			pulse.EchoPulseMat.SetPass(0);
+			pulse.spec.material.SetPass(0);
 
 			GL.Begin(GL.QUADS);
 

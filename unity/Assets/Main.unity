@@ -466,13 +466,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 257df964efd67894fb1d41e426692e3e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  aScale: 50
-  vDrag: 0.15
-  vMin: 0.5
-  vMax: 10
-  lookScale: 0.002
-  PulseSpeed: 10
-  PulseMat: {fileID: 2100000, guid: 40a0a6529d27bcb4ea3b4a2c1dc75830, type: 2}
+  cameraOffset: {x: 0, y: 2, z: 0}
   camera: {fileID: 467975288}
   playerTransform: {fileID: 1109614440}
   ScannableObjects:
@@ -481,7 +475,8 @@ MonoBehaviour:
   - {fileID: 184598433}
   - {fileID: 1614299694}
   - {fileID: 1766345712}
-  cameraOffset: {x: 0, y: 2, z: 0}
+  playerMoveSpec: {fileID: 11400000, guid: 691d222d5e945c44caf50c5be0a4dbb6, type: 2}
+  pulseSpec: {fileID: 11400000, guid: 8aef8839b704cbd4e910328f88b76504, type: 2}
   cameraTransform: {fileID: 0}
 --- !u!4 &257070214
 Transform:

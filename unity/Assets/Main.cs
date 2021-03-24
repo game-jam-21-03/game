@@ -6,7 +6,6 @@ public struct GameState
 {
 	public PlayerState player;
 	public List<Pulse> pulses;
-	public int materialIndex;
 }
 
 public struct PlayerState
@@ -20,32 +19,23 @@ public struct PlayerState
 
 public class Pulse
 {
-	public Material EchoPulseMat;
-	public Vector3 EchoPulseOrigin;
-	public float EchoPulseDistance;
-	public float EchoPulseSpeed;
+	public PulseSpec spec;
+	public Vector3 origin;
+	public float distanceTraveled;
 }
 
 public class Main : MonoBehaviour
 {
-	// TODO: Move to a spec
-	[SerializeField] float aScale = 50.0f;
-	[SerializeField] float vDrag = 0.15f;
-	[SerializeField] float vMin = 0.5f;
-	[SerializeField] float vMax = 10f;
-	[SerializeField] float lookScale = 0.005f;
+	// TODO: Move camera offset and turn speed to a camera spec
+	[SerializeField] Vector3 cameraOffset = new Vector3(0, 2, 0);
 
-	// TODO: Move to a spec
-	[SerializeField] public float PulseSpeed;
-	[SerializeField] public Material PulseMat;
-
-	// TODO: Move to a refs
+	// Inspector fields
 	[SerializeField] new Camera camera;
 	[SerializeField] Transform playerTransform;
 	[SerializeField] Scannable[] ScannableObjects;
+	[SerializeField] MoveSpec playerMoveSpec;
+	[SerializeField] PulseSpec pulseSpec;
 
-	// Inspector fields
-	[SerializeField] Vector3 cameraOffset = new Vector3(0, 2, 0);
 
 	// Internal state
 	[SerializeField, HideInInspector] GameState state;
@@ -79,6 +69,7 @@ public class Main : MonoBehaviour
 			ref float yaw = ref state.player.yawPitch.x;
 			ref float pitch = ref state.player.yawPitch.y;
 			float pitchLimit = 0.45f * Mathf.PI;
+			float lookScale = playerMoveSpec.cameraTurnSpeed;
 
 			Vector2 look = inputActions.Gameplay.Look.ReadValue<Vector2>();
 
@@ -103,6 +94,10 @@ public class Main : MonoBehaviour
 			ref Quaternion forward = ref state.player.forward;
 			ref Vector3 v = ref state.player.velocity;
 			ref Vector3 p = ref state.player.position;
+			float aScale = playerMoveSpec.acceleration;
+			float vDrag = playerMoveSpec.deceleration;
+			float vMin = playerMoveSpec.minimumMoveSpeed;
+			float vMax = playerMoveSpec.maximumMoveSped;
 
 			Vector3 a = forward * (aScale * aInput);
 			p += (0.5f * a * dt * dt) + (v * dt);
@@ -122,30 +117,40 @@ public class Main : MonoBehaviour
 		// Pulses
 		{
 			if (inputActions.Gameplay.EchoPulse.triggered)
-				SendPulse(state.player.position);
+				SendPulse(pulseSpec, state.player.position);
 
-			foreach (var p in state.pulses)
+			for (int i = state.pulses.Count - 1; i >= 0; i--)
 			{
-				p.EchoPulseDistance += dt * p.EchoPulseSpeed;
+				Pulse p = state.pulses[i];
+
+				// Update
+				float prevDist = p.distanceTraveled;
+				p.distanceTraveled += dt * p.spec.travelSpeed;
+				p.distanceTraveled = Mathf.Min(p.distanceTraveled, p.spec.maximumTravelDistance);
+
+				float currDist = p.distanceTraveled;
 				foreach (var s in ScannableObjects)
 				{
 					// If the distance from the pulse origin is within in pulse distance, it has been scanned
-					if (Vector3.Distance(p.EchoPulseOrigin, s.transform.position) <= p.EchoPulseDistance)
-					{
+					float scannableDist = Vector3.Distance(p.origin, s.transform.position);
+					if (scannableDist >= prevDist && scannableDist < currDist)
 						s.ObjectScanned();
-					}
 				}
+
+				// Remove
+				if (p.distanceTraveled >= p.spec.maximumTravelDistance)
+					state.pulses.RemoveAt(i);
 			}
 		}
 	}
 
-	void SendPulse(Vector3 origin)
+	void SendPulse(PulseSpec spec, Vector3 origin)
 	{
 		var e = new Pulse {
-			EchoPulseMat = PulseMat,
-			EchoPulseDistance = 0.0f,
-			EchoPulseOrigin = origin,
-			EchoPulseSpeed = PulseSpeed };
+			spec = spec,
+			origin = origin,
+			distanceTraveled = 0.0f,
+		};
 		state.pulses.Add(e);
 	}
 }
