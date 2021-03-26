@@ -1,6 +1,8 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Audio;
 
 public struct GameState
 {
@@ -35,7 +37,13 @@ public class Main : MonoBehaviour
 	[SerializeField] Scannable[] ScannableObjects;
 	[SerializeField] MoveSpec playerMoveSpec;
 	[SerializeField] PulseSpec pulseSpec;
-
+	
+	// Audio
+	[Header("Audio")]
+	[SerializeField] AudioClip[] musicList;
+	[SerializeField] bool RepeatSong = true;
+	[SerializeField] AudioSource musicAudioSource;
+	private short clipIndex = 1;
 
 	// Internal state
 	[SerializeField, HideInInspector] GameState state;
@@ -55,6 +63,39 @@ public class Main : MonoBehaviour
 
 		state.pulses = new List<Pulse>();
 		Pulses = state.pulses;
+
+		//musicAudioSource.enabled = true;
+		InitMusic();
+	}
+
+	private void InitMusic()
+	{
+		if (musicList.Length > 0)
+		{
+			musicAudioSource.clip = musicList[0];
+		}
+		musicAudioSource.playOnAwake = true;
+		musicAudioSource.loop = RepeatSong;
+		musicAudioSource.Play();
+	}
+
+	void Update()
+	{
+		if (!musicAudioSource.isPlaying)
+		{
+			if (musicList.Length > clipIndex)
+			{
+				musicAudioSource.clip = musicList[clipIndex];
+				musicAudioSource.Play();
+				clipIndex++;
+			}else
+			{
+				musicAudioSource.clip = musicList[0];
+				musicAudioSource.Play();
+				clipIndex = 1;
+			}
+			
+		}
 	}
 
 	void FixedUpdate()
