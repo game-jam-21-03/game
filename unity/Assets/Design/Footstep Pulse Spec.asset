@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6bbca915515cfcc4a8dfdac9f81e6c66, type: 3}
+  m_Name: Footstep Pulse Spec
+  m_EditorClassIdentifier: 
+  material: {fileID: 2100000, guid: 40a0a6529d27bcb4ea3b4a2c1dc75830, type: 2}
+  travelSpeed: 25
+  maximumTravelDistance: 10
+  width: 1
+  sharpness: 25
+  leadingEdgeColor: {r: 0.022549018, g: 0.25, b: 0.24411766, a: 1}
+  middleColor: {r: 0.011386859, g: 0.12525548, b: 0.13, a: 1}
+  trailingEdgeColor: {r: 0.2294118, g: 0.059803918, b: 0.25, a: 1}
+  horizontalBarColor: {r: 0.13, g: 0.13, b: 0.13, a: 1}

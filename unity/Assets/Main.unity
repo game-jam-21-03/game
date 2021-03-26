@@ -467,20 +467,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cameraOffset: {x: 0, y: 2, z: 0}
-  camera: {fileID: 467975288}
-  playerTransform: {fileID: 1109614440}
-  ScannableObjects:
-  - {fileID: 1342170258}
-  - {fileID: 512340377}
-  - {fileID: 184598433}
-  - {fileID: 1614299694}
-  - {fileID: 1766345712}
   playerMoveSpec: {fileID: 11400000, guid: 691d222d5e945c44caf50c5be0a4dbb6, type: 2}
-  pulseSpec: {fileID: 11400000, guid: 8aef8839b704cbd4e910328f88b76504, type: 2}
+  abilityPulseSpec: {fileID: 11400000, guid: 8aef8839b704cbd4e910328f88b76504, type: 2}
+  footstepPulseSpec: {fileID: 11400000, guid: eafda5682374eb8498e852fa1a3fa3bf, type: 2}
+  showFootsteps: 0
+  timeBetweenFootsteps: 0.67
+  pulseEffect: {fileID: 467975291}
+  playerCamera: {fileID: 467975288}
+  playerTransform: {fileID: 1109614440}
+  scannableObjects: []
   musicList:
   - {fileID: 8300000, guid: dea5452a66286774a9b883e04cc31bf7, type: 3}
   RepeatSong: 1
   musicAudioSource: {fileID: 1710908421}
+  clipIndex: 1
   cameraTransform: {fileID: 0}
 --- !u!4 &257070214
 Transform:

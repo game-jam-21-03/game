@@ -17,66 +17,86 @@ public struct PlayerState
 
 	public Vector2 yawPitch;
 	public Quaternion forward;
+
+	public float timeOfLastFootstep;
+	public bool leftFoot;
 }
 
 public class Pulse
 {
 	public PulseSpec spec;
+	public Material material;
 	public Vector3 origin;
 	public float distanceTraveled;
 }
 
+public static class ColorExtensions
+{
+	public static Color FromHex(UInt32 hex)
+	{
+		Color32 color = new Color32();
+		color.a = (byte) ((hex >> 24) & 0xFF);
+		color.r = (byte) ((hex >> 16) & 0xFF);
+		color.g = (byte) ((hex >>  8) & 0xFF);
+		color.b = (byte) ((hex >>  0) & 0xFF);
+		return color;
+	}
+}
+
 public class Main : MonoBehaviour
 {
-	// TODO: Move camera offset and turn speed to a camera spec
-	[SerializeField] Vector3 cameraOffset = new Vector3(0, 2, 0);
-
-	// Inspector fields
-	[SerializeField] new Camera camera;
-	[SerializeField] Transform playerTransform;
-	[SerializeField] Scannable[] ScannableObjects;
+	// Inspector configuration
+	[SerializeField] Vector3 cameraOffset = new Vector3(0, 2, 0); // TODO: Maybe move to a spec?
 	[SerializeField] MoveSpec playerMoveSpec;
-	[SerializeField] PulseSpec pulseSpec;
-	
+	[SerializeField] PulseSpec abilityPulseSpec;
+	[SerializeField] PulseSpec footstepPulseSpec;
+	[SerializeField] bool showFootsteps = false;
+	[SerializeField] float timeBetweenFootsteps = 0.67f;
+
+	// Inspector references
+	[SerializeField] PulseEffect pulseEffect;
+	[SerializeField] Camera playerCamera;
+	[SerializeField] Transform playerTransform;
+	[SerializeField] Scannable[] scannableObjects;
+
 	// Audio
 	[Header("Audio")]
 	[SerializeField] AudioClip[] musicList;
 	[SerializeField] bool RepeatSong = true;
 	[SerializeField] AudioSource musicAudioSource;
-	private short clipIndex = 1;
+	[SerializeField, HideInInspector] short clipIndex = 1;
 
 	// Internal state
 	[SerializeField, HideInInspector] GameState state;
 	[SerializeField, HideInInspector] InputActions inputActions;
 	[SerializeField, HideInInspector] Transform cameraTransform;
-
-	// HACK: Maybe remove this?
-	public static List<Pulse> Pulses;
+	[SerializeField, HideInInspector] Dictionary<Material, Material> materials;
 
 	void Awake()
 	{
 		inputActions = new InputActions();
 		inputActions.Gameplay.Enable();
 
-		cameraTransform = camera.transform;
-		camera.depthTextureMode = DepthTextureMode.Depth;
+		cameraTransform = playerCamera.transform;
+		playerCamera.depthTextureMode = DepthTextureMode.Depth;
 
 		state.pulses = new List<Pulse>();
-		Pulses = state.pulses;
+		pulseEffect.pulses = state.pulses;
 
-		//musicAudioSource.enabled = true;
-		InitMusic();
-	}
+		materials = new Dictionary<Material, Material>(12);
+		materials[abilityPulseSpec.material] = new Material(abilityPulseSpec.material);
+		materials[footstepPulseSpec.material] = new Material(footstepPulseSpec.material);
 
-	private void InitMusic()
-	{
-		if (musicList.Length > 0)
+		// Music
 		{
-			musicAudioSource.clip = musicList[0];
+			if (musicList.Length > 0)
+			{
+				musicAudioSource.clip = musicList[0];
+			}
+			musicAudioSource.playOnAwake = true;
+			musicAudioSource.loop = RepeatSong;
+			musicAudioSource.Play();
 		}
-		musicAudioSource.playOnAwake = true;
-		musicAudioSource.loop = RepeatSong;
-		musicAudioSource.Play();
 	}
 
 	void Update()
@@ -88,18 +108,19 @@ public class Main : MonoBehaviour
 				musicAudioSource.clip = musicList[clipIndex];
 				musicAudioSource.Play();
 				clipIndex++;
-			}else
+			}
+			else
 			{
 				musicAudioSource.clip = musicList[0];
 				musicAudioSource.Play();
 				clipIndex = 1;
 			}
-			
 		}
 	}
 
 	void FixedUpdate()
 	{
+		float t = Time.fixedTime;
 		float dt = Time.fixedDeltaTime;
 		InputSystem.Update();
 
@@ -155,10 +176,31 @@ public class Main : MonoBehaviour
 			cameraTransform.position = p + cameraOffset;
 		}
 
+		// Footsteps
+		{
+			if (showFootsteps)
+			{
+				if (state.player.velocity != Vector3.zero)
+				{
+					float timeSinceLastFootStep = t - state.player.timeOfLastFootstep;
+					if (timeSinceLastFootStep >= timeBetweenFootsteps)
+					{
+						state.player.timeOfLastFootstep = t + timeBetweenFootsteps;
+
+						float leftFootMul = state.player.leftFoot ? 1 : -1f;
+						state.player.leftFoot = !state.player.leftFoot;
+						Vector3 footOffset = (leftFootMul * 0.25f * playerTransform.right) + (0.5f * playerTransform.forward);
+						Vector3 footPosition = state.player.position + footOffset;
+						SendPulse(footstepPulseSpec, footPosition);
+					}
+				}
+			}
+		}
+
 		// Pulses
 		{
 			if (inputActions.Gameplay.EchoPulse.triggered)
-				SendPulse(pulseSpec, state.player.position);
+				SendPulse(abilityPulseSpec, state.player.position);
 
 			for (int i = state.pulses.Count - 1; i >= 0; i--)
 			{
@@ -170,7 +212,7 @@ public class Main : MonoBehaviour
 				p.distanceTraveled = Mathf.Min(p.distanceTraveled, p.spec.maximumTravelDistance);
 
 				float currDist = p.distanceTraveled;
-				foreach (var s in ScannableObjects)
+				foreach (var s in scannableObjects)
 				{
 					// If the distance from the pulse origin is within in pulse distance, it has been scanned
 					float scannableDist = Vector3.Distance(p.origin, s.transform.position);
@@ -189,6 +231,7 @@ public class Main : MonoBehaviour
 	{
 		var e = new Pulse {
 			spec = spec,
+			material = materials[spec.material],
 			origin = origin,
 			distanceTraveled = 0.0f,
 		};
