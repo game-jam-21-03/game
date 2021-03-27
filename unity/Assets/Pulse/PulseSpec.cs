@@ -13,4 +13,12 @@ public class PulseSpec : ScriptableObject
 
 	[Tooltip("How far the pulse will travel through the world. Units: unspecified")]
 	public float maximumTravelDistance;
+
+	// TODO: Finish implementing, forward to material
+	//public float width = 1;
+	//public float sharpness = 25;
+	//public Color leadingEdgeColor = ColorExtensions.FromHex(0xFF17FFF9);
+	//public Color middleColor = ColorExtensions.FromHex(0xFF0C8489);
+	//public Color trailingEdgeColor = ColorExtensions.FromHex(0xFFEA3DFF);
+	//public Color horizontalBarColor = ColorExtensions.FromHex(0xFF808080);
 }

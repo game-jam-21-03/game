@@ -3,12 +3,13 @@ using UnityEngine;
 
 public class PulseEffect : MonoBehaviour
 {
-	public new Camera camera;
+	[SerializeField] new Camera camera;
+	[HideInInspector] public List<Pulse> pulses;
 
 	[ImageEffectOpaque]
 	void OnRenderImage(RenderTexture src, RenderTexture dst)
 	{
-		RaycastCornerBlit(src, dst, Main.Pulses);
+		RaycastCornerBlit(src, dst, pulses);
 	}
 
 	void RaycastCornerBlit(RenderTexture src, RenderTexture dest, List<Pulse> pulses)
@@ -16,8 +17,8 @@ public class PulseEffect : MonoBehaviour
 		bool swapped = false;
 		foreach(var pulse in pulses)
 		{
-			pulse.spec.material.SetVector("_WorldSpacePulsePos", pulse.origin);
-			pulse.spec.material.SetFloat("_PulseDistance", pulse.distanceTraveled);
+			pulse.material.SetVector("_WorldSpacePulsePos", pulse.origin);
+			pulse.material.SetFloat("_PulseDistance", pulse.distanceTraveled);
 
 			// Compute Frustum Corners
 			float camFar = camera.farClipPlane;
@@ -50,12 +51,12 @@ public class PulseEffect : MonoBehaviour
 			// Custom Blit, encoding Frustum Corners as additional Texture Coordinates
 			RenderTexture.active = dest;
 
-			pulse.spec.material.SetTexture("_MainTex", src);
+			pulse.material.SetTexture("_MainTex", src);
 
 			GL.PushMatrix();
 			GL.LoadOrtho();
 
-			pulse.spec.material.SetPass(0);
+			pulse.material.SetPass(0);
 
 			GL.Begin(GL.QUADS);
 
