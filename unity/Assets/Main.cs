@@ -8,6 +8,8 @@ public struct GameState
 {
 	public PlayerState player;
 	public List<Pulse> pulses;
+	public HashSet<Chest> chestsOpened;
+	public List<KeyType> Keys;
 }
 
 public struct PlayerState
@@ -20,6 +22,9 @@ public struct PlayerState
 
 	public float timeOfLastFootstep;
 	public bool leftFoot;
+
+	public Vector3 cameraPosition;
+	public Quaternion cameraForward;
 }
 
 public class Pulse
@@ -59,6 +64,10 @@ public class Main : MonoBehaviour
 	[SerializeField] CharacterController playerController;
 	[SerializeField] Transform playerTransform;
 	[SerializeField] Scannable[] scannableObjects;
+	[SerializeField] Chest[] chestRefs;
+
+	// Interactions
+	[SerializeField] float interactionDistance = 10.0f;
 
 	// Audio
 	[Header("Audio")]
@@ -98,6 +107,9 @@ public class Main : MonoBehaviour
 			musicAudioSource.loop = RepeatSong;
 			musicAudioSource.Play();
 		}
+
+		state.chestsOpened = new HashSet<Chest>();
+		state.Keys = new List<KeyType>();
 	}
 
 	void Update()
@@ -129,6 +141,7 @@ public class Main : MonoBehaviour
 		{
 			ref Vector2 yawPitch = ref state.player.yawPitch;
 			ref Quaternion forward = ref state.player.forward;
+			ref Quaternion cameraForward = ref state.player.cameraForward;
 			ref float yaw = ref state.player.yawPitch.x;
 			ref float pitch = ref state.player.yawPitch.y;
 			float pitchLimit = 0.45f * Mathf.PI;
@@ -145,8 +158,10 @@ public class Main : MonoBehaviour
 			Quaternion velocityFix = forward * Quaternion.Inverse(prevForward);
 			v = velocityFix * v;
 
+			cameraForward = Quaternion.Euler(pitch * Mathf.Rad2Deg, yaw * Mathf.Rad2Deg, 0);
+
 			playerTransform.rotation = forward;
-			cameraTransform.rotation = Quaternion.Euler(pitch * Mathf.Rad2Deg, yaw * Mathf.Rad2Deg, 0);
+			cameraTransform.rotation = cameraForward;
 		}
 
 		// Movement
@@ -157,6 +172,7 @@ public class Main : MonoBehaviour
 			ref Quaternion forward = ref state.player.forward;
 			ref Vector3 v = ref state.player.velocity;
 			ref Vector3 p = ref state.player.position;
+			ref Vector3 cp = ref state.player.cameraPosition;
 			float aScale = playerMoveSpec.acceleration;
 			float vDrag = playerMoveSpec.deceleration;
 			float vMin = playerMoveSpec.minimumMoveSpeed;
@@ -177,7 +193,45 @@ public class Main : MonoBehaviour
 			//playerTransform.position = p;
 			playerController.Move(dp);
 			p = playerController.transform.position;
-			cameraTransform.position = p + cameraOffset;
+			cp = p + cameraOffset;
+			cameraTransform.position = cp;
+		}
+
+		// Interactions (Raycasts)
+		{
+			ref Vector3 cp = ref state.player.cameraPosition;
+			Vector3 cf = state.player.cameraForward * Vector3.forward;
+
+			RaycastHit hit;
+			Debug.DrawRay(cp, cf * interactionDistance, Color.red);
+			
+			if (Physics.Raycast(cp, cf, out hit,interactionDistance, 1 << 6))
+			{
+				Chest chest = hit.transform.gameObject.GetComponent<Chest>();
+				if(chest)
+				{
+					if (inputActions.Gameplay.Interact.triggered && !state.chestsOpened.Contains(chest))
+					{
+						state.chestsOpened.Add(chest);
+						// add key to inventory
+						state.Keys.Add(chest.key);
+						Debug.Log("Added: " + chest.key);
+					}
+				}
+
+				Door door = hit.transform.gameObject.GetComponent<Door>();
+				if(door)
+				{
+					if (inputActions.Gameplay.Interact.triggered && state.Keys.Contains(door.key))
+					{
+						Debug.Log("Door opened");
+						hit.transform.gameObject.SetActive(false);
+					}
+					else if (inputActions.Gameplay.Interact.triggered)
+						Debug.Log("No key for door");
+				}
+			}
+			
 		}
 
 		// Footsteps
