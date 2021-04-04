@@ -56,6 +56,7 @@ public class Main : MonoBehaviour
 	// Inspector references
 	[SerializeField] PulseEffect pulseEffect;
 	[SerializeField] Camera playerCamera;
+	[SerializeField] CharacterController playerController;
 	[SerializeField] Transform playerTransform;
 	[SerializeField] Scannable[] scannableObjects;
 
@@ -162,7 +163,8 @@ public class Main : MonoBehaviour
 			float vMax = playerMoveSpec.maximumMoveSped;
 
 			Vector3 a = forward * (aScale * aInput);
-			p += (0.5f * a * dt * dt) + (v * dt);
+			Vector3 dp = (0.5f * a * dt * dt) + (v * dt);
+			p += dp;
 			if (aInput == Vector3.zero)
 			{
 				v *= (1 - vDrag);
@@ -172,7 +174,9 @@ public class Main : MonoBehaviour
 			v += a * dt;
 			v = Vector3.ClampMagnitude(v, vMax);
 
-			playerTransform.position = p;
+			//playerTransform.position = p;
+			playerController.Move(dp);
+			p = playerController.transform.position;
 			cameraTransform.position = p + cameraOffset;
 		}
 
