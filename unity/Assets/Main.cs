@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Audio;
+using TMPro;
+using UnityEngine.UI;
 
 public struct GameState
 {
@@ -48,6 +50,11 @@ public static class ColorExtensions
 	}
 }
 
+public enum KeyType
+{
+	Key1, Key2, Key3, Key4
+}
+
 public class Main : MonoBehaviour
 {
 	// Inspector configuration
@@ -57,6 +64,7 @@ public class Main : MonoBehaviour
 	[SerializeField] PulseSpec footstepPulseSpec;
 	[SerializeField] bool showFootsteps = false;
 	[SerializeField] float timeBetweenFootsteps = 0.67f;
+	[SerializeField] float interactionDistance = 10.0f;
 
 	// Inspector references
 	[SerializeField] PulseEffect pulseEffect;
@@ -66,8 +74,11 @@ public class Main : MonoBehaviour
 	[SerializeField] Scannable[] scannableObjects;
 	[SerializeField] Chest[] chestRefs;
 
-	// Interactions
-	[SerializeField] float interactionDistance = 10.0f;
+	// UI
+	[Header("UI")]
+	[SerializeField] TextMeshProUGUI chestInfo;
+	[SerializeField] TextMeshProUGUI doorInfo;
+	[SerializeField] Image[] keyImages;
 
 	// Audio
 	[Header("Audio")]
@@ -210,26 +221,40 @@ public class Main : MonoBehaviour
 				Chest chest = hit.transform.gameObject.GetComponent<Chest>();
 				if(chest)
 				{
-					if (inputActions.Gameplay.Interact.triggered && !state.chestsOpened.Contains(chest))
+					if (!state.chestsOpened.Contains(chest))
 					{
-						state.chestsOpened.Add(chest);
-						// add key to inventory
-						state.Keys.Add(chest.key);
-						Debug.Log("Added: " + chest.key);
+						chestInfo.gameObject.SetActive(true);
+						if (inputActions.Gameplay.Interact.triggered)
+						{
+							state.chestsOpened.Add(chest);
+							// add key to inventory
+							state.Keys.Add(chest.key);
+							keyImages[(int)chest.key].gameObject.SetActive(true);
+							Debug.Log("Added: " + chest.key);
+							chestInfo.gameObject.SetActive(false);
+						}
 					}
 				}
 
 				Door door = hit.transform.gameObject.GetComponent<Door>();
 				if(door)
 				{
+					doorInfo.gameObject.SetActive(true);
 					if (inputActions.Gameplay.Interact.triggered && state.Keys.Contains(door.key))
 					{
 						Debug.Log("Door opened");
+						state.Keys.Remove(door.key);
+						keyImages[(int)door.key].gameObject.SetActive(false);
+
 						hit.transform.gameObject.SetActive(false);
+						doorInfo.gameObject.SetActive(false);
 					}
 					else if (inputActions.Gameplay.Interact.triggered)
 						Debug.Log("No key for door");
 				}
+			}else{
+				chestInfo.gameObject.SetActive(false);
+				doorInfo.gameObject.SetActive(false);
 			}
 			
 		}
