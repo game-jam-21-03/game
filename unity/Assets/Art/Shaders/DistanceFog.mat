@@ -1,0 +1,42 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: DistanceFog
+  m_Shader: {fileID: -6465566751694194690, guid: d39932060f266c3418098e17b80959db, type: 3}
+  m_ShaderKeywords: 
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: 3000
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - unity_Lightmaps:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_LightmapsInd:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_ShadowMasks:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Floats:
+    - Vector1_616a1fdee559486aa7c03c28a57f24a3: 2.34
+    - Vector1_73587c995e8b49fd90f9a10c01e72162: 1
+    - Vector1_a186a7b279b84612a1add620fb3edf69: 0
+    - Vector1_ad165bae2aec492d89f65e5263745f8f: 0.91
+    - Vector1_ba1dfa0acef34b8f985084a7e0f12e3f: 0
+    m_Colors:
+    - Color_8dd817446b60444f84fdac9b6b59bc9e: {r: 0.05, g: 0.05, b: 0.05, a: 1}
+  m_BuildTextureStacks: []
