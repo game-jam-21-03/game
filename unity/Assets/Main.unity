@@ -13793,7 +13793,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1109614439}
-  m_LocalRotation: {x: -0, y: -0.71316427, z: -0, w: 0.70099694}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -13801,7 +13801,7 @@ Transform:
   - {fileID: 467975290}
   m_Father: {fileID: 0}
   m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: -90.986, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1121749461
 GameObject:
   m_ObjectHideFlags: 0
@@ -15242,7 +15242,6 @@ GameObject:
   - component: {fileID: 1284997408}
   - component: {fileID: 1284997411}
   - component: {fileID: 1284997410}
-  - component: {fileID: 1284997409}
   - component: {fileID: 1284997412}
   m_Layer: 0
   m_Name: Body
@@ -15258,27 +15257,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1284997407}
-  m_LocalRotation: {x: -0, y: 0.69784456, z: -0, w: -0.7162493}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1109614440}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 271.491, z: 0}
---- !u!136 &1284997409
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1284997407}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  m_Radius: 0.5
-  m_Height: 2
-  m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!23 &1284997410
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -16697,7 +16682,6 @@ Transform:
   - {fileID: 48086585}
   - {fileID: 1710908420}
   - {fileID: 1848930177}
-  - {fileID: 1921505612}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -22978,76 +22962,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1912957750}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!1 &1921505611
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1921505612}
-  - component: {fileID: 1921505613}
-  m_Layer: 0
-  m_Name: Main (1)
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1921505612
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1921505611}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 1391755992}
-  m_RootOrder: 4
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1921505613
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1921505611}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 257df964efd67894fb1d41e426692e3e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  cameraOffset: {x: 0, y: 2, z: 0}
-  playerMoveSpec: {fileID: 11400000, guid: 691d222d5e945c44caf50c5be0a4dbb6, type: 2}
-  abilityPulseSpec: {fileID: 11400000, guid: 8aef8839b704cbd4e910328f88b76504, type: 2}
-  footstepPulseSpec: {fileID: 11400000, guid: eafda5682374eb8498e852fa1a3fa3bf, type: 2}
-  showFootsteps: 0
-  timeBetweenFootsteps: 0.67
-  interactionDistance: 3
-  pulseEffect: {fileID: 467975291}
-  playerCamera: {fileID: 467975288}
-  playerController: {fileID: 1284997412}
-  playerTransform: {fileID: 1109614440}
-  scannableObjects: []
-  chestRefs:
-  - {fileID: 463979016}
-  chestInfo: {fileID: 197382800}
-  doorInfo: {fileID: 602934998}
-  keyImages:
-  - {fileID: 1165215698}
-  - {fileID: 2104143581}
-  - {fileID: 801115707}
-  - {fileID: 13611161}
-  musicList:
-  - {fileID: 8300000, guid: beafab63746c6364683d1b09628eb8c0, type: 3}
-  RepeatSong: 1
-  musicAudioSource: {fileID: 1710908421}
-  clipIndex: 1
-  cameraTransform: {fileID: 0}
 --- !u!1 &1928493808
 GameObject:
   m_ObjectHideFlags: 0
