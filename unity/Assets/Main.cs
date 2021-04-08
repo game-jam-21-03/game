@@ -1,9 +1,8 @@
 using System;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.Audio;
-using TMPro;
 using UnityEngine.UI;
 
 public struct GameState
@@ -11,7 +10,7 @@ public struct GameState
 	public PlayerState player;
 	public List<Pulse> pulses;
 	public HashSet<Chest> chestsOpened;
-	public List<KeyType> Keys;
+	public List<KeyType> keys;
 }
 
 public struct PlayerState
@@ -120,7 +119,7 @@ public class Main : MonoBehaviour
 		}
 
 		state.chestsOpened = new HashSet<Chest>();
-		state.Keys = new List<KeyType>();
+		state.keys = new List<KeyType>();
 	}
 
 	void Update()
@@ -150,15 +149,15 @@ public class Main : MonoBehaviour
 
 		// Look Direction
 		{
+			// Player
+			Vector2 look = inputActions.Gameplay.Look.ReadValue<Vector2>();
+
 			ref Vector2 yawPitch = ref state.player.yawPitch;
 			ref Quaternion forward = ref state.player.forward;
-			ref Quaternion cameraForward = ref state.player.cameraForward;
 			ref float yaw = ref state.player.yawPitch.x;
 			ref float pitch = ref state.player.yawPitch.y;
 			float pitchLimit = 0.45f * Mathf.PI;
 			float lookScale = playerMoveSpec.cameraTurnSpeed;
-
-			Vector2 look = inputActions.Gameplay.Look.ReadValue<Vector2>();
 
 			Quaternion prevForward = forward;
 			yawPitch += lookScale * look;
@@ -168,22 +167,23 @@ public class Main : MonoBehaviour
 			ref Vector3 v = ref state.player.velocity;
 			Quaternion velocityFix = forward * Quaternion.Inverse(prevForward);
 			v = velocityFix * v;
-
-			cameraForward = Quaternion.Euler(pitch * Mathf.Rad2Deg, yaw * Mathf.Rad2Deg, 0);
-
 			playerTransform.rotation = forward;
+
+			// Camera
+			ref Quaternion cameraForward = ref state.player.cameraForward;
+			cameraForward = Quaternion.Euler(pitch * Mathf.Rad2Deg, yaw * Mathf.Rad2Deg, 0);
 			cameraTransform.rotation = cameraForward;
 		}
 
 		// Movement
 		{
+			// Player
 			Vector3 move = inputActions.Gameplay.Move.ReadValue<Vector2>();
 			Vector3 aInput = new Vector3(move.x, 0, move.y);
 
 			ref Quaternion forward = ref state.player.forward;
 			ref Vector3 v = ref state.player.velocity;
 			ref Vector3 p = ref state.player.position;
-			ref Vector3 cp = ref state.player.cameraPosition;
 			float aScale = playerMoveSpec.acceleration;
 			float vDrag = playerMoveSpec.deceleration;
 			float vMin = playerMoveSpec.minimumMoveSpeed;
@@ -201,11 +201,13 @@ public class Main : MonoBehaviour
 			v += a * dt;
 			v = Vector3.ClampMagnitude(v, vMax);
 
-			//playerTransform.position = p;
 			playerController.Move(dp);
 			p = playerController.transform.position;
-			cp = p + cameraOffset;
-			cameraTransform.position = cp;
+
+			// Camera
+			ref Vector3 cameraPosition = ref state.player.cameraPosition;
+			cameraPosition = p + cameraOffset;
+			cameraTransform.position = cameraPosition;
 		}
 
 		// Interactions (Raycasts)
@@ -215,11 +217,11 @@ public class Main : MonoBehaviour
 
 			RaycastHit hit;
 			Debug.DrawRay(cp, cf * interactionDistance, Color.red);
-			
+
 			if (Physics.Raycast(cp, cf, out hit,interactionDistance, 1 << 6))
 			{
 				Chest chest = hit.transform.gameObject.GetComponent<Chest>();
-				if(chest)
+				if (chest)
 				{
 					if (!state.chestsOpened.Contains(chest))
 					{
@@ -228,7 +230,7 @@ public class Main : MonoBehaviour
 						{
 							state.chestsOpened.Add(chest);
 							// add key to inventory
-							state.Keys.Add(chest.key);
+							state.keys.Add(chest.key);
 							keyImages[(int)chest.key].gameObject.SetActive(true);
 							Debug.Log("Added: " + chest.key);
 							chestInfo.gameObject.SetActive(false);
@@ -237,26 +239,30 @@ public class Main : MonoBehaviour
 				}
 
 				Door door = hit.transform.gameObject.GetComponent<Door>();
-				if(door)
+				if (door)
 				{
 					doorInfo.gameObject.SetActive(true);
-					if (inputActions.Gameplay.Interact.triggered && state.Keys.Contains(door.key))
+					if (inputActions.Gameplay.Interact.triggered && state.keys.Contains(door.key))
 					{
 						Debug.Log("Door opened");
-						state.Keys.Remove(door.key);
+						state.keys.Remove(door.key);
 						keyImages[(int)door.key].gameObject.SetActive(false);
 
 						hit.transform.gameObject.SetActive(false);
 						doorInfo.gameObject.SetActive(false);
 					}
 					else if (inputActions.Gameplay.Interact.triggered)
+					{
 						Debug.Log("No key for door");
+					}
 				}
-			}else{
+			}
+			else
+			{
 				chestInfo.gameObject.SetActive(false);
 				doorInfo.gameObject.SetActive(false);
 			}
-			
+
 		}
 
 		// Footsteps
@@ -312,12 +318,11 @@ public class Main : MonoBehaviour
 
 	void SendPulse(PulseSpec spec, Vector3 origin)
 	{
-		var e = new Pulse {
+		state.pulses.Add(new Pulse {
 			spec = spec,
 			material = materials[spec.material],
 			origin = origin,
 			distanceTraveled = 0.0f,
-		};
-		state.pulses.Add(e);
+		});
 	}
 }
