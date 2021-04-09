@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "New Pulse Spec", menuName = "Design/Pulse Spec")]
@@ -13,6 +14,9 @@ public class PulseSpec : ScriptableObject
 
 	[Tooltip("How far the pulse will travel through the world. Units: unspecified")]
 	public float maximumTravelDistance;
+
+	[NonSerialized]
+	public float maximumTravelTime;
 
 	// TODO: Finish implementing, forward to material
 	//public float width = 1;

@@ -2,11 +2,15 @@ using System;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Assertions;
 using UnityEngine.InputSystem;
+using UnityEngine.Rendering;
+using UnityEngine.Rendering.Universal;
 using UnityEngine.UI;
 
 public struct GameState
 {
+	public float prevT;
 	public PlayerState player;
 	public List<Pulse> pulses;
 	public HashSet<Chest> chestsOpened;
@@ -21,19 +25,19 @@ public struct PlayerState
 	public Vector2 yawPitch;
 	public Quaternion forward;
 
-	public float timeOfLastFootstep;
-	public bool leftFoot;
-
 	public Vector3 cameraPosition;
 	public Quaternion cameraForward;
+
+	public float timeOfLastFootstep;
+	public bool leftFoot;
 }
 
 public class Pulse
 {
 	public PulseSpec spec;
 	public Material material;
-	public Vector3 origin;
-	public float distanceTraveled;
+	public Vector3 startPosition;
+	public float startTime;
 }
 
 public static class ColorExtensions
@@ -68,10 +72,8 @@ public class Main : MonoBehaviour
 	[SerializeField] float interactionDistance = 10.0f;
 
 	// Inspector references
-	[SerializeField] PulseEffect pulseEffect;
 	[SerializeField] Camera playerCamera;
 	[SerializeField] CharacterController playerController;
-	[SerializeField] Transform playerTransform;
 	[SerializeField] Scannable[] scannableObjects;
 	[SerializeField] Chest[] chestRefs;
 
@@ -95,22 +97,24 @@ public class Main : MonoBehaviour
 	[SerializeField, HideInInspector] GameState state;
 	[SerializeField, HideInInspector] InputActions inputActions;
 	[SerializeField, HideInInspector] Transform cameraTransform;
-	[SerializeField, HideInInspector] Dictionary<Material, Material> materials;
+	[SerializeField, HideInInspector] Transform playerTransform;
+
+	public static List<Pulse> pulses;
 
 	void Awake()
 	{
 		inputActions = new InputActions();
 		inputActions.Gameplay.Enable();
 
+		playerTransform = playerController.transform;
 		cameraTransform = playerCamera.transform;
 		playerCamera.depthTextureMode = DepthTextureMode.Depth;
 
 		state.pulses = new List<Pulse>();
-		pulseEffect.pulses = state.pulses;
+		pulses = state.pulses;
 
-		materials = new Dictionary<Material, Material>(12);
-		materials[abilityPulseSpec.material] = new Material(abilityPulseSpec.material);
-		materials[footstepPulseSpec.material] = new Material(footstepPulseSpec.material);
+		InitializePulseSpec(abilityPulseSpec);
+		InitializePulseSpec(footstepPulseSpec);
 
 		// Music
 		{
@@ -129,6 +133,10 @@ public class Main : MonoBehaviour
 
 	void Update()
 	{
+		float t = Time.time;
+		float dt = Time.deltaTime;
+
+		// Audio
 		if (!musicAudioSource.isPlaying)
 		{
 			if (musicList.Length > clipIndex)
@@ -142,6 +150,22 @@ public class Main : MonoBehaviour
 				musicAudioSource.clip = musicList[0];
 				musicAudioSource.Play();
 				clipIndex = 1;
+			}
+		}
+
+		// Pulse Rendering
+		{
+			for (int i = 0; i < state.pulses.Count; i++)
+			{
+				Pulse p = state.pulses[i];
+
+				float pulseDuration = t - p.startTime;
+				// TODO: Rendering!
+				//UniversalRenderPipeline.RenderSingleCamera
+				//Graphics.
+				//RenderPipelineManager.beginCameraRendering
+
+				// TODO: Scannable audio can be hooked up here
 			}
 		}
 	}
@@ -375,49 +399,55 @@ public class Main : MonoBehaviour
 						state.player.leftFoot = !state.player.leftFoot;
 						Vector3 footOffset = (leftFootMul * 0.25f * playerTransform.right) + (0.5f * playerTransform.forward);
 						Vector3 footPosition = state.player.position + footOffset;
-						SendPulse(footstepPulseSpec, footPosition);
+						SendPulse(footstepPulseSpec, footPosition, t);
 					}
 				}
 			}
 		}
 
-		// Pulses
+		// Pulse Behavior
 		{
 			if (inputActions.Gameplay.EchoPulse.triggered)
-				SendPulse(abilityPulseSpec, state.player.position);
+				SendPulse(abilityPulseSpec, state.player.position, t);
 
-			for (int i = state.pulses.Count - 1; i >= 0; i--)
+			for (int iPulse = state.pulses.Count - 1; iPulse >= 0; iPulse--)
 			{
-				Pulse p = state.pulses[i];
+				Pulse p = state.pulses[iPulse];
 
 				// Update
-				float prevDist = p.distanceTraveled;
-				p.distanceTraveled += dt * p.spec.travelSpeed;
-				p.distanceTraveled = Mathf.Min(p.distanceTraveled, p.spec.maximumTravelDistance);
+				float prevPulseDuration = (t - Time.fixedDeltaTime) - p.startTime;
+				float pulseDuration = t - p.startTime;
+				pulseDuration = Mathf.Min(pulseDuration, p.spec.maximumTravelTime);
 
-				float currDist = p.distanceTraveled;
-				foreach (var s in scannableObjects)
+				for (int iScannable = 0; iScannable < scannableObjects.Length; iScannable++)
 				{
-					// If the distance from the pulse origin is within in pulse distance, it has been scanned
-					float scannableDist = Vector3.Distance(p.origin, s.transform.position);
-					if (scannableDist >= prevDist && scannableDist < currDist)
+					Scannable s = scannableObjects[iScannable];
+
+					float distanceToScannable = Vector3.Distance(p.startPosition, s.transform.position);
+					float durationToScannable = distanceToScannable / p.spec.travelSpeed;
+					if (durationToScannable >= prevPulseDuration && durationToScannable < pulseDuration)
 						s.ObjectScanned();
 				}
 
 				// Remove
-				if (p.distanceTraveled >= p.spec.maximumTravelDistance)
-					state.pulses.RemoveAt(i);
+				if (pulseDuration == p.spec.maximumTravelTime)
+					state.pulses.RemoveAt(iPulse);
 			}
 		}
 	}
 
-	void SendPulse(PulseSpec spec, Vector3 origin)
+	void InitializePulseSpec(PulseSpec spec)
 	{
+		spec.maximumTravelTime = spec.maximumTravelDistance / spec.travelSpeed;
+	}
+
+	void SendPulse(PulseSpec spec, Vector3 startPosition, float startTime)
+	{
+		Assert.AreNotEqual(spec.maximumTravelTime, 0.0f);
 		state.pulses.Add(new Pulse {
 			spec = spec,
-			material = materials[spec.material],
-			origin = origin,
-			distanceTraveled = 0.0f,
+			startPosition = startPosition,
+			startTime = startTime,
 		});
 	}
 }
