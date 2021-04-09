@@ -4149,7 +4149,7 @@ MonoBehaviour:
   - {fileID: 13611163}
   musicList:
   - {fileID: 8300000, guid: beafab63746c6364683d1b09628eb8c0, type: 3}
-  RepeatSong: 1
+  repeatSong: 1
   musicAudioSource: {fileID: 1710908421}
   clipIndex: 1
   cameraTransform: {fileID: 0}

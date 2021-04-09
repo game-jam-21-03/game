@@ -49,8 +49,11 @@ public static class ColorExtensions
 	}
 }
 
-public enum ItemType {
-	LevelKey, Boots, Boltcutters
+public enum ItemType
+{
+	LevelKey,
+	Boots,
+	Boltcutters,
 }
 
 public class Main : MonoBehaviour
@@ -84,7 +87,7 @@ public class Main : MonoBehaviour
 	// Audio
 	[Header("Audio")]
 	[SerializeField] AudioClip[] musicList;
-	[SerializeField] bool RepeatSong = true;
+	[SerializeField] bool repeatSong = true;
 	[SerializeField] AudioSource musicAudioSource;
 	[SerializeField, HideInInspector] short clipIndex = 1;
 
@@ -116,7 +119,7 @@ public class Main : MonoBehaviour
 				musicAudioSource.clip = musicList[0];
 			}
 			musicAudioSource.playOnAwake = true;
-			musicAudioSource.loop = RepeatSong;
+			musicAudioSource.loop = repeatSong;
 			musicAudioSource.Play();
 		}
 
@@ -240,45 +243,45 @@ public class Main : MonoBehaviour
 								}
 							}
 
-							if(haveKey)
+							if (haveKey)
+							{
+								chest.locked = false;
+								state.chestsOpened.Add(chest);
+								// add boltcutters to inventory
+								state.items.Add(chest.item);
+								for (int i = 0; i < itemImages.Length; i++)
 								{
-									chest.locked = false;
-									state.chestsOpened.Add(chest);
-									// add boltcutters to inventory
-									state.items.Add(chest.item);
-									for(int i = 0; i < itemImages.Length; i++)
+									if (!itemImages[i].IsActive())
 									{
-										if (!itemImages[i].IsActive())
-										{
-											// item not in use
-											itemImages[i].sprite = chest.item.icon;
-											itemImages[i].gameObject.SetActive(true);
-											chestInfo.gameObject.SetActive(false);
-											itemImagesItemRefs[i].itemRef = chest.item;
-											break;
-										}
-									}
-
-									for(int i = 0; i < itemImages.Length; i++)
-									{
-										if (itemImages[i].IsActive() && itemImagesItemRefs[i].itemRef.itemType == ItemType.LevelKey)
-										{
-											// remove key
-											itemImages[i].gameObject.SetActive(false);
-											break;
-										}
-									}
-
-									foreach (var item in state.items)
-									{
-										if (item.itemType == ItemType.LevelKey)
-										{
-											// have key to open chest
-											state.items.Remove(item);
-											break;
-										}
+										// item not in use
+										itemImages[i].sprite = chest.item.icon;
+										itemImages[i].gameObject.SetActive(true);
+										chestInfo.gameObject.SetActive(false);
+										itemImagesItemRefs[i].itemRef = chest.item;
+										break;
 									}
 								}
+
+								for (int i = 0; i < itemImages.Length; i++)
+								{
+									if (itemImages[i].IsActive() && itemImagesItemRefs[i].itemRef.itemType == ItemType.LevelKey)
+									{
+										// remove key
+										itemImages[i].gameObject.SetActive(false);
+										break;
+									}
+								}
+
+								foreach (var item in state.items)
+								{
+									if (item.itemType == ItemType.LevelKey)
+									{
+										// have key to open chest
+										state.items.Remove(item);
+										break;
+									}
+								}
+							}
 						}
 					}
 				}
@@ -295,7 +298,7 @@ public class Main : MonoBehaviour
 							{
 								// we have matching item
 								state.items.Remove(door.item);
-								for(int i = 0; i < itemImages.Length; i++)
+								for (int i = 0; i < itemImages.Length; i++)
 								{
 									if (itemImages[i].IsActive() && itemImages[i].sprite == door.item.icon)
 									{
@@ -312,12 +315,12 @@ public class Main : MonoBehaviour
 				}
 
 				Lever lever = hit.transform.gameObject.GetComponent<Lever>();
-				if(lever)
+				if (lever)
 				{
 					leverInfo.gameObject.SetActive(true);
 					if (inputActions.Gameplay.Interact.triggered && !lever.triggered)
 					{
-						//  do an animation / sound for grate being opened?
+						// do an animation / sound for grate being opened?
 						Instantiate(lever.grateRef.Item.itemPrefab,lever.grateRef.transform.position, Quaternion.identity);
 						lever.grateRef.gameObject.SetActive(false);
 						lever.triggered = true;
@@ -325,14 +328,14 @@ public class Main : MonoBehaviour
 				}
 
 				Key key = hit.transform.gameObject.GetComponent<Key>();
-				if(key)
+				if (key)
 				{
 					keyInfo.gameObject.SetActive(true);
 					if (inputActions.Gameplay.Interact.triggered)
 					{
-						//  sound for key obtained
+						// sound for key obtained
 						state.items.Add(key.item);
-						for(int i = 0; i < itemImages.Length; i++)
+						for (int i = 0; i < itemImages.Length; i++)
 						{
 							if (!itemImages[i].IsActive())
 							{
@@ -355,7 +358,6 @@ public class Main : MonoBehaviour
 				leverInfo.gameObject.SetActive(false);
 				keyInfo.gameObject.SetActive(false);
 			}
-
 		}
 
 		// Footsteps
