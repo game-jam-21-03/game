@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Door : MonoBehaviour
+public class Key : MonoBehaviour
 {
-	[SerializeField] public ItemSpec item;
+    [SerializeField] public ItemSpec item;
 }
