@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 11d2cc942c1516349bc636891951be01, type: 3}
+  m_Name: Level1Boltcutters
+  m_EditorClassIdentifier: 
+  itemType: 2
+  itemPrefab: {fileID: 0}
+  material: {fileID: 2100000, guid: 2f6aadc3ec9bc24469e61e4646d1d854, type: 2}
+  highlightMaterial: {fileID: 2100000, guid: 150c0b5f6874fd04b9d7d034bcb3ef82, type: 2}
+  icon: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}

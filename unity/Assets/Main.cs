@@ -10,7 +10,7 @@ public struct GameState
 	public PlayerState player;
 	public List<Pulse> pulses;
 	public HashSet<Chest> chestsOpened;
-	public List<KeyType> keys;
+	public List<ItemSpec> items;
 }
 
 public struct PlayerState
@@ -49,9 +49,8 @@ public static class ColorExtensions
 	}
 }
 
-public enum KeyType
-{
-	Key1, Key2, Key3, Key4
+public enum ItemType {
+	LevelKey, Boots, Boltcutters
 }
 
 public class Main : MonoBehaviour
@@ -77,7 +76,10 @@ public class Main : MonoBehaviour
 	[Header("UI")]
 	[SerializeField] TextMeshProUGUI chestInfo;
 	[SerializeField] TextMeshProUGUI doorInfo;
-	[SerializeField] Image[] keyImages;
+	[SerializeField] TextMeshProUGUI leverInfo;
+	[SerializeField] TextMeshProUGUI keyInfo;
+	[SerializeField] Image[] itemImages;
+	[SerializeField] GUIItem[] itemImagesItemRefs;
 
 	// Audio
 	[Header("Audio")]
@@ -119,7 +121,7 @@ public class Main : MonoBehaviour
 		}
 
 		state.chestsOpened = new HashSet<Chest>();
-		state.keys = new List<KeyType>();
+		state.items = new List<ItemSpec>();
 	}
 
 	void Update()
@@ -226,14 +228,57 @@ public class Main : MonoBehaviour
 					if (!state.chestsOpened.Contains(chest))
 					{
 						chestInfo.gameObject.SetActive(true);
-						if (inputActions.Gameplay.Interact.triggered)
+						if (inputActions.Gameplay.Interact.triggered && chest.locked)
 						{
-							state.chestsOpened.Add(chest);
-							// add key to inventory
-							state.keys.Add(chest.key);
-							keyImages[(int)chest.key].gameObject.SetActive(true);
-							Debug.Log("Added: " + chest.key);
-							chestInfo.gameObject.SetActive(false);
+							bool haveKey = false;
+							foreach (var item in state.items)
+							{
+								if (item.itemType == ItemType.LevelKey)
+								{
+									// have key to open chest
+									haveKey = true;
+								}
+							}
+
+							if(haveKey)
+								{
+									chest.locked = false;
+									state.chestsOpened.Add(chest);
+									// add boltcutters to inventory
+									state.items.Add(chest.item);
+									for(int i = 0; i < itemImages.Length; i++)
+									{
+										if (!itemImages[i].IsActive())
+										{
+											// item not in use
+											itemImages[i].sprite = chest.item.icon;
+											itemImages[i].gameObject.SetActive(true);
+											chestInfo.gameObject.SetActive(false);
+											itemImagesItemRefs[i].itemRef = chest.item;
+											break;
+										}
+									}
+
+									for(int i = 0; i < itemImages.Length; i++)
+									{
+										if (itemImages[i].IsActive() && itemImagesItemRefs[i].itemRef.itemType == ItemType.LevelKey)
+										{
+											// remove key
+											itemImages[i].gameObject.SetActive(false);
+											break;
+										}
+									}
+
+									foreach (var item in state.items)
+									{
+										if (item.itemType == ItemType.LevelKey)
+										{
+											// have key to open chest
+											state.items.Remove(item);
+											break;
+										}
+									}
+								}
 						}
 					}
 				}
@@ -242,18 +287,64 @@ public class Main : MonoBehaviour
 				if (door)
 				{
 					doorInfo.gameObject.SetActive(true);
-					if (inputActions.Gameplay.Interact.triggered && state.keys.Contains(door.key))
+					if (inputActions.Gameplay.Interact.triggered)
 					{
-						Debug.Log("Door opened");
-						state.keys.Remove(door.key);
-						keyImages[(int)door.key].gameObject.SetActive(false);
-
-						hit.transform.gameObject.SetActive(false);
-						doorInfo.gameObject.SetActive(false);
+						foreach (var item in state.items)
+						{
+							if (item.itemType == door.item.itemType)
+							{
+								// we have matching item
+								state.items.Remove(door.item);
+								for(int i = 0; i < itemImages.Length; i++)
+								{
+									if (itemImages[i].IsActive() && itemImages[i].sprite == door.item.icon)
+									{
+										itemImages[i].gameObject.SetActive(false);
+										break;
+									}
+								}
+								hit.transform.gameObject.SetActive(false);
+								doorInfo.gameObject.SetActive(false);
+								break;
+							}
+						}
 					}
-					else if (inputActions.Gameplay.Interact.triggered)
+				}
+
+				Lever lever = hit.transform.gameObject.GetComponent<Lever>();
+				if(lever)
+				{
+					leverInfo.gameObject.SetActive(true);
+					if (inputActions.Gameplay.Interact.triggered && !lever.triggered)
 					{
-						Debug.Log("No key for door");
+						//  do an animation / sound for grate being opened?
+						Instantiate(lever.grateRef.Item.itemPrefab,lever.grateRef.transform.position, Quaternion.identity);
+						lever.grateRef.gameObject.SetActive(false);
+						lever.triggered = true;
+					}
+				}
+
+				Key key = hit.transform.gameObject.GetComponent<Key>();
+				if(key)
+				{
+					keyInfo.gameObject.SetActive(true);
+					if (inputActions.Gameplay.Interact.triggered)
+					{
+						//  sound for key obtained
+						state.items.Add(key.item);
+						for(int i = 0; i < itemImages.Length; i++)
+						{
+							if (!itemImages[i].IsActive())
+							{
+								// item not in use
+								itemImages[i].sprite = key.item.icon;
+								itemImages[i].gameObject.SetActive(true);
+								keyInfo.gameObject.SetActive(false);
+								itemImagesItemRefs[i].itemRef = key.item;
+								break;
+							}
+						}
+						Destroy(key.gameObject);
 					}
 				}
 			}
@@ -261,6 +352,8 @@ public class Main : MonoBehaviour
 			{
 				chestInfo.gameObject.SetActive(false);
 				doorInfo.gameObject.SetActive(false);
+				leverInfo.gameObject.SetActive(false);
+				keyInfo.gameObject.SetActive(false);
 			}
 
 		}
