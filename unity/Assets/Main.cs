@@ -365,7 +365,8 @@ public class Main : MonoBehaviour
 					{
 						// do an animation / sound for grate being opened?
 						AudioSource.PlayClipAtPoint(pullLever, lever.transform.position, sfxVolume);
-						Instantiate(lever.grateRef.Item.itemPrefab,lever.grateRef.transform.position, Quaternion.identity);
+						//Instantiate(lever.grateRef.Item.itemPrefab,lever.grateRef.transform.position, Quaternion.identity);
+						lever.grateRef.key.keyInteractable = true;
 						lever.grateRef.gameObject.SetActive(false);
 						lever.triggered = true;
 					}
@@ -374,25 +375,28 @@ public class Main : MonoBehaviour
 				Key key = hit.transform.gameObject.GetComponent<Key>();
 				if (key)
 				{
-					keyInfo.gameObject.SetActive(true);
-					if (inputActions.Gameplay.Interact.triggered)
+					if (key.keyInteractable)
 					{
-						// sound for key obtained
-						AudioSource.PlayClipAtPoint(pickUpKey, key.transform.position, sfxVolume);
-						state.items.Add(key.item);
-						for (int i = 0; i < itemImages.Length; i++)
+						keyInfo.gameObject.SetActive(true);
+						if (inputActions.Gameplay.Interact.triggered)
 						{
-							if (!itemImages[i].IsActive())
+							// sound for key obtained
+							AudioSource.PlayClipAtPoint(pickUpKey, key.transform.position, sfxVolume);
+							state.items.Add(key.item);
+							for (int i = 0; i < itemImages.Length; i++)
 							{
-								// item not in use
-								itemImages[i].sprite = key.item.icon;
-								itemImages[i].gameObject.SetActive(true);
-								keyInfo.gameObject.SetActive(false);
-								itemImagesItemRefs[i].itemRef = key.item;
-								break;
+								if (!itemImages[i].IsActive())
+								{
+									// item not in use
+									itemImages[i].sprite = key.item.icon;
+									itemImages[i].gameObject.SetActive(true);
+									keyInfo.gameObject.SetActive(false);
+									itemImagesItemRefs[i].itemRef = key.item;
+									break;
+								}
 							}
+							Destroy(key.gameObject);
 						}
-						Destroy(key.gameObject);
 					}
 				}
 			}
