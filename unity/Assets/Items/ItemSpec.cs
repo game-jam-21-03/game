@@ -19,4 +19,7 @@ public class ItemSpec : ScriptableObject
 
 	[Tooltip("The sprite used for the object in the UI")]
 	public Sprite icon;
+
+	[Tooltip("Is this item currently able to be interacted with?")]
+	public bool itemEnabled;
 }

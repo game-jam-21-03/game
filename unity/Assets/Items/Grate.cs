@@ -5,5 +5,5 @@ using UnityEngine;
 public class Grate : MonoBehaviour
 {
 	[SerializeField] public ItemSpec Item;
-	[SerializeField] public Key key;
+	[SerializeField] public GameObject itemLockedRef;
 }

@@ -365,8 +365,10 @@ public class Main : MonoBehaviour
 					{
 						// do an animation / sound for grate being opened?
 						AudioSource.PlayClipAtPoint(pullLever, lever.transform.position, sfxVolume);
-						//Instantiate(lever.grateRef.Item.itemPrefab,lever.grateRef.transform.position, Quaternion.identity);
-						lever.grateRef.key.keyInteractable = true;
+						var keyRef = lever.grateRef.itemLockedRef.GetComponent<Key>();
+						if (keyRef)
+							lever.grateRef.itemLockedRef.GetComponent<Key>().item.itemEnabled = true;
+
 						lever.grateRef.gameObject.SetActive(false);
 						lever.triggered = true;
 					}
@@ -375,7 +377,7 @@ public class Main : MonoBehaviour
 				Key key = hit.transform.gameObject.GetComponent<Key>();
 				if (key)
 				{
-					if (key.keyInteractable)
+					if (key.item.itemEnabled)
 					{
 						keyInfo.gameObject.SetActive(true);
 						if (inputActions.Gameplay.Interact.triggered)
