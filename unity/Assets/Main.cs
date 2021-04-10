@@ -103,6 +103,7 @@ public class Main : MonoBehaviour
 	[SerializeField] AudioClip pickUpBoltCutter;
 	[SerializeField] AudioClip pickUpKey;
 	[SerializeField] AudioClip triggerTrap;
+	[SerializeField] float sfxVolume;
 
 	[SerializeField, HideInInspector] short clipIndex = 1;
 
@@ -284,6 +285,7 @@ public class Main : MonoBehaviour
 
 							if (haveKey)
 							{
+								AudioSource.PlayClipAtPoint(openChest, chest.transform.position, sfxVolume);
 								chest.locked = false;
 								state.chestsOpened.Add(chest);
 								// add boltcutters to inventory
@@ -336,6 +338,7 @@ public class Main : MonoBehaviour
 							if (item.itemType == door.item.itemType)
 							{
 								// we have matching item
+								AudioSource.PlayClipAtPoint(openDoor, door.transform.position, sfxVolume);
 								state.items.Remove(door.item);
 								for (int i = 0; i < itemImages.Length; i++)
 								{
@@ -360,6 +363,7 @@ public class Main : MonoBehaviour
 					if (inputActions.Gameplay.Interact.triggered && !lever.triggered)
 					{
 						// do an animation / sound for grate being opened?
+						AudioSource.PlayClipAtPoint(pullLever, lever.transform.position, sfxVolume);
 						Instantiate(lever.grateRef.Item.itemPrefab,lever.grateRef.transform.position, Quaternion.identity);
 						lever.grateRef.gameObject.SetActive(false);
 						lever.triggered = true;
@@ -373,6 +377,7 @@ public class Main : MonoBehaviour
 					if (inputActions.Gameplay.Interact.triggered)
 					{
 						// sound for key obtained
+						AudioSource.PlayClipAtPoint(pickUpKey, key.transform.position, sfxVolume);
 						state.items.Add(key.item);
 						for (int i = 0; i < itemImages.Length; i++)
 						{
@@ -412,12 +417,14 @@ public class Main : MonoBehaviour
 				Trap trap = hit.transform.gameObject.GetComponent<Trap>();
 				if (trap && state.items.Contains(trap.itemSpecToDisableTrap))
 				{
+					AudioSource.PlayClipAtPoint(disableTrap, trap.transform.position, sfxVolume);
 					state.trapsDisabled.Add(trap.gameObject);
 					trap.gameObject.SetActive(false);
 				}
 				else if (trap)
 				{
 					// don't have boots
+					AudioSource.PlayClipAtPoint(triggerTrap, trap.transform.position, sfxVolume);
 					playerTransform.position = state.checkpoint;
 					p = state.checkpoint;
 					for (int i = 0; i < state.trapsDisabled.Count; i++)

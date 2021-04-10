@@ -4159,6 +4159,7 @@ MonoBehaviour:
   pickUpBoltCutter: {fileID: 8300000, guid: 0293f5763028d71459b7ce6946281207, type: 3}
   pickUpKey: {fileID: 8300000, guid: d986eb2cee7bde14ab299d248f53058e, type: 3}
   triggerTrap: {fileID: 8300000, guid: a3609b6c823467f4cb8da5aa16a91603, type: 3}
+  sfxVolume: 1
   clipIndex: 1
   cameraTransform: {fileID: 0}
   playerTransform: {fileID: 1109614440}
