@@ -93,6 +93,17 @@ public class Main : MonoBehaviour
 	[SerializeField] AudioClip[] musicList;
 	[SerializeField] bool repeatSong = true;
 	[SerializeField] AudioSource musicAudioSource;
+	[SerializeField] AudioSource pulseSoundFX;
+	[SerializeField] AudioClip disableTrap;
+	[SerializeField] AudioClip pullLever;
+	[SerializeField] AudioClip openDoor;
+	[SerializeField] AudioClip openHatch;
+	[SerializeField] AudioClip openChest;
+	[SerializeField] AudioClip pickUpBoots;
+	[SerializeField] AudioClip pickUpBoltCutter;
+	[SerializeField] AudioClip pickUpKey;
+	[SerializeField] AudioClip triggerTrap;
+
 	[SerializeField, HideInInspector] short clipIndex = 1;
 
 	// Internal state
@@ -132,6 +143,7 @@ public class Main : MonoBehaviour
 
 		state.chestsOpened = new HashSet<Chest>();
 		state.items = new List<ItemSpec>();
+
 	}
 
 	void Update()
@@ -447,7 +459,10 @@ public class Main : MonoBehaviour
 		// Pulse Behavior
 		{
 			if (inputActions.Gameplay.EchoPulse.triggered)
+			{
 				SendPulse(abilityPulseSpec, state.player.position, t);
+				pulseSoundFX.Play();
+			}
 
 			for (int iPulse = state.pulses.Count - 1; iPulse >= 0; iPulse--)
 			{
