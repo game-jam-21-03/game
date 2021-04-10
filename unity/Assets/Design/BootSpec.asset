@@ -13,7 +13,8 @@ MonoBehaviour:
   m_Name: BootSpec
   m_EditorClassIdentifier: 
   itemType: 1
-  itemPrefab: {fileID: 0}
-  material: {fileID: 0}
-  highlightMaterial: {fileID: 0}
-  icon: {fileID: 0}
+  itemPrefab: {fileID: 2508783886960174182, guid: 90158429702337f4bb17467bd288e3ce, type: 3}
+  material: {fileID: 2100000, guid: 69105dc25653ac74398214a4ff945743, type: 2}
+  highlightMaterial: {fileID: 2100000, guid: 150c0b5f6874fd04b9d7d034bcb3ef82, type: 2}
+  icon: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
+  itemEnabled: 0

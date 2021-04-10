@@ -4,6 +4,5 @@ using UnityEngine;
 
 public class Grate : MonoBehaviour
 {
-	[SerializeField] public ItemSpec Item;
 	[SerializeField] public GameObject itemLockedRef;
 }

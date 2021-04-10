@@ -72,6 +72,7 @@ public class Main : MonoBehaviour
 	[SerializeField] bool showFootsteps = false;
 	[SerializeField] float timeBetweenFootsteps = 0.67f;
 	[SerializeField] float interactionDistance = 10.0f;
+	[SerializeField] public float gravityModifier = 1f;
 
 	// Inspector references
 	[SerializeField] Camera playerCamera;
@@ -81,10 +82,7 @@ public class Main : MonoBehaviour
 
 	// UI
 	[Header("UI")]
-	[SerializeField] TextMeshProUGUI chestInfo;
-	[SerializeField] TextMeshProUGUI doorInfo;
-	[SerializeField] TextMeshProUGUI leverInfo;
-	[SerializeField] TextMeshProUGUI keyInfo;
+	[SerializeField] TextMeshProUGUI interactionInfoPanel;
 	[SerializeField] Image[] itemImages;
 	[SerializeField] GUIItem[] itemImagesItemRefs;
 
@@ -247,6 +245,7 @@ public class Main : MonoBehaviour
 			v += a * dt;
 			v = Vector3.ClampMagnitude(v, vMax);
 
+			state.player.velocity += gravityModifier * Physics.gravity * dt;
 			playerController.Move(dp);
 			p = playerController.transform.position;
 
@@ -271,7 +270,7 @@ public class Main : MonoBehaviour
 				{
 					if (!state.chestsOpened.Contains(chest))
 					{
-						chestInfo.gameObject.SetActive(true);
+						interactionInfoPanel.gameObject.SetActive(true);
 						if (inputActions.Gameplay.Interact.triggered && chest.locked)
 						{
 							bool haveKey = false;
@@ -298,7 +297,7 @@ public class Main : MonoBehaviour
 										// item not in use
 										itemImages[i].sprite = chest.item.icon;
 										itemImages[i].gameObject.SetActive(true);
-										chestInfo.gameObject.SetActive(false);
+										interactionInfoPanel.gameObject.SetActive(false);
 										itemImagesItemRefs[i].itemRef = chest.item;
 										break;
 									}
@@ -331,7 +330,7 @@ public class Main : MonoBehaviour
 				Door door = hit.transform.gameObject.GetComponent<Door>();
 				if (door)
 				{
-					doorInfo.gameObject.SetActive(true);
+					interactionInfoPanel.gameObject.SetActive(true);
 					if (inputActions.Gameplay.Interact.triggered)
 					{
 						foreach (var item in state.items)
@@ -350,7 +349,7 @@ public class Main : MonoBehaviour
 									}
 								}
 								hit.transform.gameObject.SetActive(false);
-								doorInfo.gameObject.SetActive(false);
+								interactionInfoPanel.gameObject.SetActive(false);
 								break;
 							}
 						}
@@ -360,14 +359,18 @@ public class Main : MonoBehaviour
 				Lever lever = hit.transform.gameObject.GetComponent<Lever>();
 				if (lever)
 				{
-					leverInfo.gameObject.SetActive(true);
+					interactionInfoPanel.gameObject.SetActive(true);
 					if (inputActions.Gameplay.Interact.triggered && !lever.triggered)
 					{
 						// do an animation / sound for grate being opened?
 						AudioSource.PlayClipAtPoint(pullLever, lever.transform.position, sfxVolume);
 						var keyRef = lever.grateRef.itemLockedRef.GetComponent<Key>();
 						if (keyRef)
-							lever.grateRef.itemLockedRef.GetComponent<Key>().item.itemEnabled = true;
+							keyRef.item.itemEnabled = true;
+
+						var bootRef = lever.grateRef.itemLockedRef.GetComponent<Boots>();
+						if (bootRef)
+							bootRef.item.itemEnabled = true;
 
 						lever.grateRef.gameObject.SetActive(false);
 						lever.triggered = true;
@@ -379,7 +382,7 @@ public class Main : MonoBehaviour
 				{
 					if (key.item.itemEnabled)
 					{
-						keyInfo.gameObject.SetActive(true);
+						interactionInfoPanel.gameObject.SetActive(true);
 						if (inputActions.Gameplay.Interact.triggered)
 						{
 							// sound for key obtained
@@ -392,7 +395,7 @@ public class Main : MonoBehaviour
 									// item not in use
 									itemImages[i].sprite = key.item.icon;
 									itemImages[i].gameObject.SetActive(true);
-									keyInfo.gameObject.SetActive(false);
+									interactionInfoPanel.gameObject.SetActive(false);
 									itemImagesItemRefs[i].itemRef = key.item;
 									break;
 								}
@@ -401,13 +404,37 @@ public class Main : MonoBehaviour
 						}
 					}
 				}
+
+				Boots boots = hit.transform.gameObject.GetComponent<Boots>();
+				if (boots)
+				{
+					if (boots.item.itemEnabled)
+					{
+						interactionInfoPanel.gameObject.SetActive(true);
+						if (inputActions.Gameplay.Interact.triggered)
+						{
+							AudioSource.PlayClipAtPoint(pickUpBoots, boots.transform.position, sfxVolume);
+							state.items.Add(boots.item);
+							for (int i = 0; i < itemImages.Length; i++)
+							{
+								if (!itemImages[i].IsActive())
+								{
+									// item not in use
+									itemImages[i].sprite = boots.item.icon;
+									itemImages[i].gameObject.SetActive(true);
+									interactionInfoPanel.gameObject.SetActive(false);
+									itemImagesItemRefs[i].itemRef = boots.item;
+									break;
+								}
+							}
+							Destroy(boots.gameObject);
+						}
+					}
+				}
 			}
 			else
 			{
-				chestInfo.gameObject.SetActive(false);
-				doorInfo.gameObject.SetActive(false);
-				leverInfo.gameObject.SetActive(false);
-				keyInfo.gameObject.SetActive(false);
+				interactionInfoPanel.gameObject.SetActive(false);
 			}
 		}
 
