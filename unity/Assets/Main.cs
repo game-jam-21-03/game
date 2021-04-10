@@ -117,6 +117,7 @@ public class Main : MonoBehaviour
 
 	void Awake()
 	{
+		Cursor.visible = false;
 		inputActions = new InputActions();
 		inputActions.Gameplay.Enable();
 
