@@ -14,7 +14,9 @@ public struct GameState
 	public PlayerState player;
 	public List<Pulse> pulses;
 	public HashSet<Chest> chestsOpened;
+	public List<GameObject> trapsDisabled;
 	public List<ItemSpec> items;
+	public Vector3 checkpoint;
 }
 
 public struct PlayerState
@@ -111,6 +113,7 @@ public class Main : MonoBehaviour
 		playerCamera.depthTextureMode = DepthTextureMode.Depth;
 
 		state.pulses = new List<Pulse>();
+		state.trapsDisabled = new List<GameObject>();
 		pulses = state.pulses;
 
 		InitializePulseSpec(abilityPulseSpec);
@@ -381,6 +384,42 @@ public class Main : MonoBehaviour
 				doorInfo.gameObject.SetActive(false);
 				leverInfo.gameObject.SetActive(false);
 				keyInfo.gameObject.SetActive(false);
+			}
+		}
+
+		// Downward Raycast
+		{
+			//Vector3 downVector = Vector3.up * -1;
+			ref Vector3 p = ref state.player.position;
+			Debug.DrawRay(p, Vector3.up * -1 * 2.0f, Color.green);
+			RaycastHit hit;
+
+			if (Physics.Raycast(p, Vector3.up * -1, out hit, 2.0f, 1 << 6))
+			{
+				// Traps
+				Trap trap = hit.transform.gameObject.GetComponent<Trap>();
+				if (trap && state.items.Contains(trap.itemSpecToDisableTrap))
+				{
+					state.trapsDisabled.Add(trap.gameObject);
+					trap.gameObject.SetActive(false);
+				}
+				else if (trap)
+				{
+					// don't have boots
+					playerTransform.position = state.checkpoint;
+					p = state.checkpoint;
+					for (int i = 0; i < state.trapsDisabled.Count; i++)
+					{
+						state.trapsDisabled[i].SetActive(true);
+					}
+					state.trapsDisabled.Clear();
+				}
+
+				// Checkpoint
+				if (hit.transform.gameObject.name == "Checkpoint")
+				{
+					state.checkpoint = hit.transform.position;
+				}
 			}
 		}
 
