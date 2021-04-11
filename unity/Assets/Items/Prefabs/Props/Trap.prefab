@@ -118,6 +118,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemSpecToDisableTrap: {fileID: 11400000, guid: 78935081ba02b6947a81acab6323faf5, type: 2}
   trapAnim: {fileID: 4539555695904893320}
+  trapEnabled: 1
 --- !u!65 &5631393360820412026
 BoxCollider:
   m_ObjectHideFlags: 0

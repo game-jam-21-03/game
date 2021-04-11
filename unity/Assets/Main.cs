@@ -468,19 +468,31 @@ public class Main : MonoBehaviour
 				{
 					AudioSource.PlayClipAtPoint(disableTrap, trap.transform.position, sfxVolume);
 					state.trapsDisabled.Add(trap.gameObject);
-					trap.gameObject.SetActive(false);
+					trap.trapEnabled = false;
+					state.items.Remove(trap.itemSpecToDisableTrap);
+					for (int i = 0; i < itemImages.Length; i++)
+					{
+						if (itemImages[i].IsActive() && itemImages[i].sprite == trap.itemSpecToDisableTrap.icon)
+						{
+							itemImages[i].gameObject.SetActive(false);
+							break;
+						}
+					}
 				}
 				else if (trap)
 				{
-					// don't have boots
-					AudioSource.PlayClipAtPoint(triggerTrap, trap.transform.position, sfxVolume);
-					playerTransform.position = state.checkpoint;
-					p = state.checkpoint;
-					for (int i = 0; i < state.trapsDisabled.Count; i++)
+					if(trap.trapEnabled)
 					{
-						state.trapsDisabled[i].SetActive(true);
+						// don't have boots
+						AudioSource.PlayClipAtPoint(triggerTrap, trap.transform.position, sfxVolume);
+						playerTransform.position = state.checkpoint;
+						p = state.checkpoint;
+						for (int i = 0; i < state.trapsDisabled.Count; i++)
+						{
+							state.trapsDisabled[i].SetActive(true);
+						}
+						state.trapsDisabled.Clear();
 					}
-					state.trapsDisabled.Clear();
 				}
 
 				// Checkpoint
