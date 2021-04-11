@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 3904585386823734969}
   - component: {fileID: -2694124044846268474}
   - component: {fileID: 8746972797376956162}
+  - component: {fileID: 8414385327338708285}
   m_Layer: 6
   m_Name: BoltCutter
   m_TagString: Untagged
@@ -108,4 +109,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba5d108a89130a94bb55722c54911f40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  item: {fileID: 0}
+  item: {fileID: 11400000, guid: 16e4277f0fdbfaa46932a8260cad2548, type: 2}
+  meshes:
+  - {fileID: 3904585386823734969}
+  baseMaterial: {fileID: 2100000, guid: 508276eff65da344e8385ea8757b78b2, type: 2}
+--- !u!114 &8414385327338708285
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3255860401377703788}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: de93d732272450c4e9fc17a2564ad17b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 3011254471956243528}
   - component: {fileID: 487128475331027378}
   - component: {fileID: 5821154278533538701}
+  - component: {fileID: 4545401599466780094}
   m_Layer: 6
   m_Name: Chest_Lid
   m_TagString: Untagged
@@ -113,6 +114,25 @@ MonoBehaviour:
   locked: 1
   chestAnim: {fileID: 3503342021994204595}
   chestCollider: {fileID: 487128475331027378}
+  meshes:
+  - {fileID: 9076177776524690029}
+  - {fileID: 8849235714481908895}
+  - {fileID: 3268929302800065493}
+  - {fileID: 7316648174055819936}
+  - {fileID: 9076177776524690029}
+  baseMaterial: {fileID: 2100000, guid: 508276eff65da344e8385ea8757b78b2, type: 2}
+--- !u!114 &4545401599466780094
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3814053172556911326}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: de93d732272450c4e9fc17a2564ad17b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &4575119486820657734
 GameObject:
   m_ObjectHideFlags: 0
@@ -124,6 +144,7 @@ GameObject:
   - component: {fileID: 4388904487935587340}
   - component: {fileID: 2514056911787937281}
   - component: {fileID: 8849235714481908895}
+  - component: {fileID: 2733150298970589621}
   m_Layer: 0
   m_Name: Chest_Flap
   m_TagString: Untagged
@@ -194,6 +215,18 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &2733150298970589621
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4575119486820657734}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: de93d732272450c4e9fc17a2564ad17b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &6189950582816219492
 GameObject:
   m_ObjectHideFlags: 0
@@ -205,6 +238,7 @@ GameObject:
   - component: {fileID: 3041436013415184002}
   - component: {fileID: 964540005656014769}
   - component: {fileID: 7316648174055819936}
+  - component: {fileID: 6932320152730325800}
   m_Layer: 0
   m_Name: Lock_Base
   m_TagString: Untagged
@@ -275,6 +309,18 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &6932320152730325800
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6189950582816219492}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: de93d732272450c4e9fc17a2564ad17b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7419104145742963640
 GameObject:
   m_ObjectHideFlags: 0
@@ -288,6 +334,7 @@ GameObject:
   - component: {fileID: 9076177776524690029}
   - component: {fileID: 3503342021994204595}
   - component: {fileID: 5500295474422434294}
+  - component: {fileID: 3977865442791657262}
   m_Layer: 0
   m_Name: Chest
   m_TagString: Untagged
@@ -392,6 +439,18 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.92350847, y: 0.50191426, z: 0.64913887}
   m_Center: {x: 0.000000029802322, y: 0.2509563, z: 0}
+--- !u!114 &3977865442791657262
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7419104145742963640}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: de93d732272450c4e9fc17a2564ad17b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8370136307603190720
 GameObject:
   m_ObjectHideFlags: 0
@@ -403,6 +462,7 @@ GameObject:
   - component: {fileID: 616012647736466384}
   - component: {fileID: 8487175645958171295}
   - component: {fileID: 3268929302800065493}
+  - component: {fileID: 32939525005091246}
   m_Layer: 0
   m_Name: Lock_Top
   m_TagString: Untagged
@@ -474,3 +534,15 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &32939525005091246
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8370136307603190720}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: de93d732272450c4e9fc17a2564ad17b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

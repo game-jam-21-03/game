@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 5481195961685102041}
   - component: {fileID: 8218393712318040339}
   - component: {fileID: 8888768808513304693}
+  - component: {fileID: 3911572873399923376}
   m_Layer: 0
   m_Name: Grate
   m_TagString: Untagged
@@ -96,6 +97,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   itemLockedRef: {fileID: 0}
+  meshes:
+  - {fileID: 5481195961685102041}
+  baseMaterial: {fileID: 2100000, guid: 508276eff65da344e8385ea8757b78b2, type: 2}
 --- !u!65 &8888768808513304693
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -109,3 +113,15 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.7932919, y: 0.79514885, z: 0.12825298}
   m_Center: {x: 0.00000014901161, y: 0.000000044703484, z: 0}
+--- !u!114 &3911572873399923376
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6274045207438978060}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: de93d732272450c4e9fc17a2564ad17b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

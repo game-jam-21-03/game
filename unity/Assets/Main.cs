@@ -77,7 +77,7 @@ public class Main : MonoBehaviour
 	// Inspector references
 	[SerializeField] Camera playerCamera;
 	[SerializeField] CharacterController playerController;
-	[SerializeField] Scannable[] scannableObjects;
+	[SerializeField, HideInInspector] Scannable[] scannableObjects;
 	[SerializeField] Chest[] chestRefs;
 
 	// UI
@@ -144,6 +144,11 @@ public class Main : MonoBehaviour
 		state.chestsOpened = new HashSet<Chest>();
 		state.items = new List<ItemSpec>();
 
+	}
+
+	void Start() 
+	{
+		scannableObjects = FindObjectsOfType<Scannable>();
 	}
 
 	void Update()
@@ -337,7 +342,8 @@ public class Main : MonoBehaviour
 								break;
 							}
 						}
-						Destroy(boltcutters.gameObject);
+						//Destroy(boltcutters.gameObject);
+						boltcutters.gameObject.SetActive(false);
 					}
 				}
 
@@ -415,7 +421,8 @@ public class Main : MonoBehaviour
 									break;
 								}
 							}
-							Destroy(key.gameObject);
+							// Destroy(key.gameObject);
+							key.gameObject.SetActive(false);
 						}
 					}
 				}
@@ -442,7 +449,8 @@ public class Main : MonoBehaviour
 									break;
 								}
 							}
-							Destroy(boots.gameObject);
+							//Destroy(boots.gameObject);
+							boots.gameObject.SetActive(false);
 						}
 					}
 				}
@@ -548,7 +556,7 @@ public class Main : MonoBehaviour
 					float distanceToScannable = Vector3.Distance(p.startPosition, s.transform.position);
 					float durationToScannable = distanceToScannable / p.spec.travelSpeed;
 					if (durationToScannable >= prevPulseDuration && durationToScannable < pulseDuration)
-						s.ObjectScanned();
+					s.ObjectScanned();
 				}
 
 				// Remove

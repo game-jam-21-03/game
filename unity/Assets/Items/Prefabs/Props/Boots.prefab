@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 4544258711273929778}
   - component: {fileID: 4828214237223512189}
   - component: {fileID: 6880792650154027932}
+  - component: {fileID: 1242290858271273807}
   m_Layer: 6
   m_Name: Boots
   m_TagString: Untagged
@@ -109,3 +110,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   item: {fileID: 11400000, guid: 78935081ba02b6947a81acab6323faf5, type: 2}
+  meshes:
+  - {fileID: 4544258711273929778}
+  baseMaterial: {fileID: 2100000, guid: 508276eff65da344e8385ea8757b78b2, type: 2}
+--- !u!114 &1242290858271273807
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2598734526982872551}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: de93d732272450c4e9fc17a2564ad17b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

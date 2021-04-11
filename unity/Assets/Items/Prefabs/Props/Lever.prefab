@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 8525550842337227950}
   - component: {fileID: 6442151574816613376}
   - component: {fileID: 6479504644339789970}
+  - component: {fileID: 932206148114927167}
   m_Layer: 0
   m_Name: Lever_Pullie
   m_TagString: Untagged
@@ -81,6 +82,18 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &932206148114927167
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 154624053701716129}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: de93d732272450c4e9fc17a2564ad17b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7797573690229674203
 GameObject:
   m_ObjectHideFlags: 0
@@ -95,6 +108,7 @@ GameObject:
   - component: {fileID: 5428307913000623548}
   - component: {fileID: 8796957504497575067}
   - component: {fileID: 5882349532062391874}
+  - component: {fileID: 3291273322698488420}
   m_Layer: 6
   m_Name: Lever
   m_TagString: Untagged
@@ -200,6 +214,10 @@ MonoBehaviour:
   grateRef: {fileID: 0}
   triggered: 0
   leverAnim: {fileID: 5428307913000623548}
+  meshes:
+  - {fileID: 8590184752550375694}
+  - {fileID: 6479504644339789970}
+  baseMaterial: {fileID: 2100000, guid: 508276eff65da344e8385ea8757b78b2, type: 2}
 --- !u!65 &5882349532062391874
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -213,3 +231,15 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.2463474, y: 0.56229, z: 0.3086762}
   m_Center: {x: 0.00000015273694, y: 0, z: 0.13500388}
+--- !u!114 &3291273322698488420
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7797573690229674203}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: de93d732272450c4e9fc17a2564ad17b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

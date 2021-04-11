@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 4539555695904893320}
   - component: {fileID: 4406051414811605034}
   - component: {fileID: 5631393360820412026}
+  - component: {fileID: 8262960360490058018}
   m_Layer: 6
   m_Name: Trap
   m_TagString: Untagged
@@ -119,6 +120,10 @@ MonoBehaviour:
   itemSpecToDisableTrap: {fileID: 11400000, guid: 78935081ba02b6947a81acab6323faf5, type: 2}
   trapAnim: {fileID: 4539555695904893320}
   trapEnabled: 1
+  meshes:
+  - {fileID: 1317296584791264302}
+  - {fileID: 171114405542440013}
+  baseMaterial: {fileID: 2100000, guid: 508276eff65da344e8385ea8757b78b2, type: 2}
 --- !u!65 &5631393360820412026
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -132,6 +137,18 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1.6390576, y: 0.11348659, z: 1.6405826}
   m_Center: {x: 0, y: 0.018071078, z: 0.000000029802322}
+--- !u!114 &8262960360490058018
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 668509888199929339}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: de93d732272450c4e9fc17a2564ad17b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3184967332673867746
 GameObject:
   m_ObjectHideFlags: 0
@@ -143,6 +160,7 @@ GameObject:
   - component: {fileID: 4202394972898140634}
   - component: {fileID: 7254728831658115805}
   - component: {fileID: 171114405542440013}
+  - component: {fileID: 6333859817969463433}
   m_Layer: 0
   m_Name: FloorTrap_Spikes
   m_TagString: Untagged
@@ -213,3 +231,15 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &6333859817969463433
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3184967332673867746}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: de93d732272450c4e9fc17a2564ad17b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
