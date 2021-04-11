@@ -3408,7 +3408,7 @@
     },
     "m_Name": "EmissiveStrength",
     "m_DefaultReferenceName": "Vector1_ac018828d9a146308126862b9d9bd5b8",
-    "m_OverrideReferenceName": "",
+    "m_OverrideReferenceName": "_EmissiveStrength",
     "m_GeneratePropertyBlock": true,
     "m_Precision": 0,
     "overrideHLSLDeclaration": false,
