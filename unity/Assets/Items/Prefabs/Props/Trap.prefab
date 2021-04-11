@@ -12,7 +12,9 @@ GameObject:
   - component: {fileID: 3864947243194874084}
   - component: {fileID: 1317296584791264302}
   - component: {fileID: 4539555695904893320}
-  m_Layer: 0
+  - component: {fileID: 4406051414811605034}
+  - component: {fileID: 5631393360820412026}
+  m_Layer: 6
   m_Name: Trap
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -102,6 +104,33 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &4406051414811605034
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 668509888199929339}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b1ceb50d0d170d540a9fcedd824d23b2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemSpecToDisableTrap: {fileID: 11400000, guid: 78935081ba02b6947a81acab6323faf5, type: 2}
+  trapAnim: {fileID: 4539555695904893320}
+--- !u!65 &5631393360820412026
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 668509888199929339}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1.6390576, y: 0.11348659, z: 1.6405826}
+  m_Center: {x: 0, y: 0.018071078, z: 0.000000029802322}
 --- !u!1 &3184967332673867746
 GameObject:
   m_ObjectHideFlags: 0

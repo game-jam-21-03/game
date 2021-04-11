@@ -285,23 +285,13 @@ public class Main : MonoBehaviour
 
 							if (haveKey)
 							{
+								chest.chestAnim.SetTrigger("Opening");
 								AudioSource.PlayClipAtPoint(openChest, chest.transform.position, sfxVolume);
 								chest.locked = false;
 								state.chestsOpened.Add(chest);
-								// add boltcutters to inventory
-								state.items.Add(chest.item);
-								for (int i = 0; i < itemImages.Length; i++)
-								{
-									if (!itemImages[i].IsActive())
-									{
-										// item not in use
-										itemImages[i].sprite = chest.item.icon;
-										itemImages[i].gameObject.SetActive(true);
-										interactionInfoPanel.gameObject.SetActive(false);
-										itemImagesItemRefs[i].itemRef = chest.item;
-										break;
-									}
-								}
+
+								chest.item.gameObject.GetComponent<BoxCollider>().enabled = true;
+								chest.chestCollider.enabled = false;
 
 								for (int i = 0; i < itemImages.Length; i++)
 								{
@@ -327,6 +317,30 @@ public class Main : MonoBehaviour
 					}
 				}
 
+				Boltcutter boltcutters = hit.transform.gameObject.GetComponent<Boltcutter>();
+				if (boltcutters)
+				{
+					interactionInfoPanel.gameObject.SetActive(true);
+					if (inputActions.Gameplay.Interact.triggered)
+					{
+						// add boltcutters to inventory
+						state.items.Add(boltcutters.item);
+						for (int i = 0; i < itemImages.Length; i++)
+						{
+							if (!itemImages[i].IsActive())
+							{
+								// item not in use
+								itemImages[i].sprite = boltcutters.item.icon;
+								itemImages[i].gameObject.SetActive(true);
+								interactionInfoPanel.gameObject.SetActive(false);
+								itemImagesItemRefs[i].itemRef = boltcutters.item;
+								break;
+							}
+						}
+						Destroy(boltcutters.gameObject);
+					}
+				}
+
 				Door door = hit.transform.gameObject.GetComponent<Door>();
 				if (door)
 				{
@@ -337,7 +351,7 @@ public class Main : MonoBehaviour
 						{
 							if (item.itemType == door.item.itemType)
 							{
-								// we have matching item
+								door.doorAnim.SetTrigger("Opening");
 								AudioSource.PlayClipAtPoint(openDoor, door.transform.position, sfxVolume);
 								state.items.Remove(door.item);
 								for (int i = 0; i < itemImages.Length; i++)
@@ -348,7 +362,8 @@ public class Main : MonoBehaviour
 										break;
 									}
 								}
-								hit.transform.gameObject.SetActive(false);
+								//hit.transform.gameObject.SetActive(false);
+								door.doorCollider.enabled = false;
 								interactionInfoPanel.gameObject.SetActive(false);
 								break;
 							}
@@ -362,7 +377,7 @@ public class Main : MonoBehaviour
 					interactionInfoPanel.gameObject.SetActive(true);
 					if (inputActions.Gameplay.Interact.triggered && !lever.triggered)
 					{
-						// do an animation / sound for grate being opened?
+						lever.leverAnim.SetTrigger("Opening");
 						AudioSource.PlayClipAtPoint(pullLever, lever.transform.position, sfxVolume);
 						var keyRef = lever.grateRef.itemLockedRef.GetComponent<Key>();
 						if (keyRef)

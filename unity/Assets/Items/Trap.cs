@@ -5,4 +5,5 @@ using UnityEngine;
 public class Trap : MonoBehaviour
 {
     [SerializeField] public ItemSpec itemSpecToDisableTrap;
+	[SerializeField] public Animator trapAnim;
 }

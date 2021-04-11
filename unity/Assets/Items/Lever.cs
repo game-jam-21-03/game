@@ -6,4 +6,5 @@ public class Lever : MonoBehaviour
 {
 	[SerializeField] public Grate grateRef;
 	[SerializeField] public bool triggered;
+	[SerializeField] public Animator leverAnim;
 }

@@ -11,7 +11,9 @@ GameObject:
   - component: {fileID: 3412426575535867741}
   - component: {fileID: 1798207773283191032}
   - component: {fileID: 4544258711273929778}
-  m_Layer: 0
+  - component: {fileID: 4828214237223512189}
+  - component: {fileID: 6880792650154027932}
+  m_Layer: 6
   m_Name: Boots
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -81,3 +83,29 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &4828214237223512189
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2598734526982872551}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.45526308, y: 0.42795944, z: 0.39593273}
+  m_Center: {x: 0.00066357106, y: 0.20136634, z: -0.0007772073}
+--- !u!114 &6880792650154027932
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2598734526982872551}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 530b8b94f0750734f9d9f0c222de038f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  item: {fileID: 11400000, guid: 78935081ba02b6947a81acab6323faf5, type: 2}
