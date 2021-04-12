@@ -153,6 +153,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1655126618075262723}
     m_Modifications:
+    - target: {fileID: 267574526432306677, guid: ec1ec88bd99ef984495a4877efff8af1, type: 3}
+      propertyPath: m_Size.y
+      value: 1.8351909
+      objectReference: {fileID: 0}
+    - target: {fileID: 267574526432306677, guid: ec1ec88bd99ef984495a4877efff8af1, type: 3}
+      propertyPath: m_Center.y
+      value: 0.9175922
+      objectReference: {fileID: 0}
     - target: {fileID: 6093738338971606421, guid: ec1ec88bd99ef984495a4877efff8af1, type: 3}
       propertyPath: m_Name
       value: Crate02

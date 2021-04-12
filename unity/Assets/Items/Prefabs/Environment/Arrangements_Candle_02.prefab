@@ -190,6 +190,18 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 4001854345240773156}
     m_Modifications:
+    - target: {fileID: 267574526432306677, guid: ec1ec88bd99ef984495a4877efff8af1, type: 3}
+      propertyPath: m_Size.x
+      value: 1.023291
+      objectReference: {fileID: 0}
+    - target: {fileID: 267574526432306677, guid: ec1ec88bd99ef984495a4877efff8af1, type: 3}
+      propertyPath: m_Size.y
+      value: 2.0562022
+      objectReference: {fileID: 0}
+    - target: {fileID: 267574526432306677, guid: ec1ec88bd99ef984495a4877efff8af1, type: 3}
+      propertyPath: m_Center.y
+      value: 1.0281011
+      objectReference: {fileID: 0}
     - target: {fileID: 6093738338971606421, guid: ec1ec88bd99ef984495a4877efff8af1, type: 3}
       propertyPath: m_Name
       value: Crate02
@@ -299,6 +311,18 @@ PrefabInstance:
     - target: {fileID: 1867128383089512433, guid: 6304b6e969f9a374186cea71b5146278, type: 3}
       propertyPath: m_Name
       value: Crate01
+      objectReference: {fileID: 0}
+    - target: {fileID: 6467377595237563932, guid: 6304b6e969f9a374186cea71b5146278, type: 3}
+      propertyPath: m_Size.y
+      value: 2.1066146
+      objectReference: {fileID: 0}
+    - target: {fileID: 6467377595237563932, guid: 6304b6e969f9a374186cea71b5146278, type: 3}
+      propertyPath: m_Size.z
+      value: 1.0510749
+      objectReference: {fileID: 0}
+    - target: {fileID: 6467377595237563932, guid: 6304b6e969f9a374186cea71b5146278, type: 3}
+      propertyPath: m_Center.y
+      value: 1.0533073
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6304b6e969f9a374186cea71b5146278, type: 3}
