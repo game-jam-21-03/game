@@ -92,6 +92,7 @@ public class Main : MonoBehaviour
 	[SerializeField] Image[] itemImages;
 	[SerializeField] GUIItem[] itemImagesItemRefs;
 	[SerializeField] GameObject wonMenu;
+	[SerializeField] Image radialCooldown;
 
 	// Audio
 	[Header("Audio")]
@@ -130,6 +131,8 @@ public class Main : MonoBehaviour
 
 	public static List<Pulse> pulses;
 	float pulseTime = 10.0f;
+	bool pulseOnCooldown = false;
+	float cooldownTimer;
 
 	void SetMetaState(MetaState newState)
 	{
@@ -189,6 +192,7 @@ public class Main : MonoBehaviour
 	void Start() 
 	{
 		scannableObjects = FindObjectsOfType<Scannable>();
+		cooldownTimer = abilityPulseSpec.pulseCooldown;
 		#if UNITY_EDITOR
 		traps = FindObjectsOfType<Trap>();
 		#endif
@@ -655,6 +659,7 @@ public class Main : MonoBehaviour
 			pulseTime += dt;
 			if (inputActions.Gameplay.EchoPulse.triggered)
 			{
+				pulseOnCooldown = true;
 				Cursor.lockState = CursorLockMode.Locked;
 				float totalPulseTime = abilityPulseSpec.pulseCooldown;
 				if (pulseTime >= totalPulseTime)
@@ -662,6 +667,20 @@ public class Main : MonoBehaviour
 					SendPulse(abilityPulseSpec, state.player.position, t);
 					pulseSoundFX.Play();
 					pulseTime = 0.0f;
+				}
+			}
+
+			if (pulseOnCooldown)
+			{
+				cooldownTimer += dt;
+				if (cooldownTimer <= abilityPulseSpec.pulseCooldown)
+				{
+					radialCooldown.fillAmount = Mathf.Lerp(1.0f, 0.0f, cooldownTimer / abilityPulseSpec.pulseCooldown);
+				}
+				else
+				{
+					cooldownTimer = 0.0f;
+					pulseOnCooldown = false;
 				}
 			}
 
