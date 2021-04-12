@@ -4,10 +4,8 @@ using UnityEngine;
 
 public class Flame : MonoBehaviour
 {
-	[SerializeField] GameObject mainCam;
-
 	void Update() 
 	{
-		transform.forward = mainCam.transform.forward * -1;
+		transform.forward = Camera.main.transform.forward * -1;
 	}
 }
