@@ -5,11 +5,11 @@ OcclusionCullingSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_OcclusionBakeSettings:
-    smallestOccluder: 5
+    smallestOccluder: 2
     smallestHole: 0.25
     backfaceThreshold: 100
-  m_SceneGUID: 00000000000000000000000000000000
-  m_OcclusionCullingData: {fileID: 0}
+  m_SceneGUID: a5ff291dd48064944b9196ee0fa65ddd
+  m_OcclusionCullingData: {fileID: 36300000, guid: e454a9db6294ab54893ed16101cc4c00, type: 2}
 --- !u!104 &2
 RenderSettings:
   m_ObjectHideFlags: 0
@@ -15675,9 +15675,17 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6881300743457762021, guid: 92abd5c7a30ce7543bdf521ff4584de4, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 18
+      objectReference: {fileID: 0}
     - target: {fileID: 6963702962005435312, guid: 92abd5c7a30ce7543bdf521ff4584de4, type: 3}
       propertyPath: m_Name
       value: StoneWall (29)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6963702962005435312, guid: 92abd5c7a30ce7543bdf521ff4584de4, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 18
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 92abd5c7a30ce7543bdf521ff4584de4, type: 3}

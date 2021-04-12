@@ -14,7 +14,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 16
   m_IsActive: 1
 --- !u!4 &1680921369974727729
 Transform:
@@ -44,6 +44,26 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1680921369974727729}
     m_Modifications:
+    - target: {fileID: 3609480981696885161, guid: 1ab3512686e38b94d9b9dc3e1133180f, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 3896952668928643989, guid: 1ab3512686e38b94d9b9dc3e1133180f, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 5443474548615166471, guid: 1ab3512686e38b94d9b9dc3e1133180f, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 5799687340770646384, guid: 1ab3512686e38b94d9b9dc3e1133180f, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 6852531117201497772, guid: 1ab3512686e38b94d9b9dc3e1133180f, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 16
+      objectReference: {fileID: 0}
     - target: {fileID: 8353602201991182473, guid: 1ab3512686e38b94d9b9dc3e1133180f, type: 3}
       propertyPath: m_RootOrder
       value: 4
@@ -91,6 +111,10 @@ PrefabInstance:
     - target: {fileID: 8693676113041990195, guid: 1ab3512686e38b94d9b9dc3e1133180f, type: 3}
       propertyPath: m_Name
       value: CandleStand (3)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8693676113041990195, guid: 1ab3512686e38b94d9b9dc3e1133180f, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 16
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1ab3512686e38b94d9b9dc3e1133180f, type: 3}
