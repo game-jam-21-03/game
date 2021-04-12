@@ -275,6 +275,7 @@ public class Main : MonoBehaviour
 				{
 					if (!state.chestsOpened.Contains(chest))
 					{
+						interactionInfoPanel.text = "I wonder if I have a key for this..";
 						interactionInfoPanel.gameObject.SetActive(true);
 						if (inputActions.Gameplay.Interact.triggered && chest.locked)
 						{
@@ -325,6 +326,7 @@ public class Main : MonoBehaviour
 				Boltcutter boltcutters = hit.transform.gameObject.GetComponent<Boltcutter>();
 				if (boltcutters)
 				{
+					interactionInfoPanel.text = "I can probably cut a chain with these..";
 					interactionInfoPanel.gameObject.SetActive(true);
 					if (inputActions.Gameplay.Interact.triggered)
 					{
@@ -350,6 +352,7 @@ public class Main : MonoBehaviour
 				Door door = hit.transform.gameObject.GetComponent<Door>();
 				if (door)
 				{
+					interactionInfoPanel.text = "I might need some bolt cutters to get through this door..";
 					interactionInfoPanel.gameObject.SetActive(true);
 					if (inputActions.Gameplay.Interact.triggered)
 					{
@@ -380,6 +383,7 @@ public class Main : MonoBehaviour
 				Lever lever = hit.transform.gameObject.GetComponent<Lever>();
 				if (lever)
 				{
+					interactionInfoPanel.text = "I wonder if this lever might open something...";
 					interactionInfoPanel.gameObject.SetActive(true);
 					if (inputActions.Gameplay.Interact.triggered && !lever.triggered)
 					{
@@ -393,7 +397,10 @@ public class Main : MonoBehaviour
 						if (bootRef)
 							bootRef.item.itemEnabled = true;
 
-						lever.grateRef.gameObject.SetActive(false);
+						var rb = lever.grateRef.GetComponent<Rigidbody>();
+						rb.useGravity = true;
+						rb.AddForce(new Vector3(.0f,.0f, 500.0f));
+						lever.grateRef.showMessage = false;
 						lever.triggered = true;
 					}
 				}
@@ -403,6 +410,7 @@ public class Main : MonoBehaviour
 				{
 					if (key.item.itemEnabled)
 					{
+						interactionInfoPanel.text = "I wonder if this will open a chest..";
 						interactionInfoPanel.gameObject.SetActive(true);
 						if (inputActions.Gameplay.Interact.triggered)
 						{
@@ -427,11 +435,22 @@ public class Main : MonoBehaviour
 					}
 				}
 
+				Grate grate = hit.transform.gameObject.GetComponent<Grate>();
+				if (grate)
+				{
+					if (grate.showMessage)
+					{
+						interactionInfoPanel.text = "It won't budge. I wonder if I can disable it somehow..";
+						interactionInfoPanel.gameObject.SetActive(true);
+					}
+				}
+
 				Boots boots = hit.transform.gameObject.GetComponent<Boots>();
 				if (boots)
 				{
 					if (boots.item.itemEnabled)
 					{
+						interactionInfoPanel.text = "I might need these later..";
 						interactionInfoPanel.gameObject.SetActive(true);
 						if (inputActions.Gameplay.Interact.triggered)
 						{

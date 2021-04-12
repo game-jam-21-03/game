@@ -5,6 +5,7 @@ using UnityEngine;
 public class Grate : MonoBehaviour
 {
 	[SerializeField] public GameObject itemLockedRef;
+	public bool showMessage = true;
 
 	[SerializeField] public MeshRenderer[] meshes;
 	[SerializeField] public Material baseMaterial;
