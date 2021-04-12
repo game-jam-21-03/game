@@ -12,3 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 60a99fe6947b1f24e954e9b490e5b7ae, type: 3}
   m_Name: Player Move Spec
   m_EditorClassIdentifier: 
+  acceleration: 20
+  deceleration: 0.15
+  minimumMoveSpeed: 0.5
+  maximumMoveSped: 10
+  cameraTurnSpeed: 0.005

@@ -15,4 +15,4 @@ MonoBehaviour:
   material: {fileID: 2100000, guid: 40a0a6529d27bcb4ea3b4a2c1dc75830, type: 2}
   travelSpeed: 15
   maximumTravelDistance: 100
-  pulseCooldown: 6
+  pulseCooldown: 5
