@@ -91,9 +91,7 @@ public class Main : MonoBehaviour
 	[SerializeField] TextMeshProUGUI interactionInfoPanel;
 	[SerializeField] Image[] itemImages;
 	[SerializeField] GUIItem[] itemImagesItemRefs;
-	[SerializeField] GameObject pauseMenu;
 	[SerializeField] GameObject wonMenu;
-	[SerializeField] GameObject startMenu;
 
 	// Audio
 	[Header("Audio")]
@@ -138,17 +136,9 @@ public class Main : MonoBehaviour
 		metaState = newState;
 		switch (newState)
 		{
-			case MetaState.Start:
-			{
-				Time.timeScale = 0f;
-				startMenu.SetActive(true);
-				break;
-			}
 			case MetaState.Playing:
 			{
-				startMenu.SetActive(false);
 				wonMenu.SetActive(false);
-				pauseMenu.SetActive(false);
 				Time.timeScale = 1f;
 				break;
 			}
@@ -156,12 +146,6 @@ public class Main : MonoBehaviour
 			{
 				Time.timeScale = 0f;
 				wonMenu.SetActive(true);
-				break;
-			}
-			case MetaState.Paused:
-			{
-				Time.timeScale = 0f;
-				pauseMenu.SetActive(true);
 				break;
 			}
 		}
@@ -608,6 +592,7 @@ public class Main : MonoBehaviour
 					AudioSource.PlayClipAtPoint(disableTrap, trap.transform.position, sfxVolume);
 					state.trapsDisabled.Add(trap.gameObject);
 					trap.trapEnabled = false;
+					trap.gameObject.GetComponent<Animator>().enabled = false;
 					state.items.Remove(trap.itemSpecToDisableTrap);
 					for (int i = 0; i < itemImages.Length; i++)
 					{
@@ -633,6 +618,12 @@ public class Main : MonoBehaviour
 				if (hit.transform.gameObject.name == "Checkpoint")
 				{
 					state.checkpoint = hit.transform.position;
+				}
+
+				// Checkpoint
+				if (hit.transform.gameObject.name == "WinTrigger")
+				{
+					SetMetaState(MetaState.Won);
 				}
 			}
 		}
