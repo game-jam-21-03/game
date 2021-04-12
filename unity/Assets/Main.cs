@@ -399,7 +399,8 @@ public class Main : MonoBehaviour
 
 						var rb = lever.grateRef.GetComponent<Rigidbody>();
 						rb.useGravity = true;
-						rb.AddForce(new Vector3(.0f,.0f, 500.0f));
+						rb.isKinematic = false;
+						rb.AddRelativeForce(new Vector3(.0f,.10f, 100.0f));
 						lever.grateRef.showMessage = false;
 						lever.triggered = true;
 					}
@@ -468,7 +469,6 @@ public class Main : MonoBehaviour
 									break;
 								}
 							}
-							//Destroy(boots.gameObject);
 							boots.gameObject.SetActive(false);
 						}
 					}
