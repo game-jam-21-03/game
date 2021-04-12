@@ -36,6 +36,46 @@
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": ""
+                },
+                {
+                    "name": "IgnoreTraps",
+                    "type": "Button",
+                    "id": "ca79304a-74bb-4992-82d1-5a2ca12704da",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "IgnoreCollisions",
+                    "type": "Button",
+                    "id": "16fe9710-e6e6-4226-a5e4-7e753e588fcd",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "TeleportLevel1",
+                    "type": "Button",
+                    "id": "68e0c9e3-564b-4c36-a6ff-aebe590d6d20",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "TeleportLevel2",
+                    "type": "Button",
+                    "id": "ebc150fd-9f4a-4ffb-bda7-f7c7980a55a4",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "TeleportLevel3",
+                    "type": "Button",
+                    "id": "aaeb3c83-654f-4fa6-8785-1bf332055142",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
                 }
             ],
             "bindings": [
@@ -135,6 +175,61 @@
                     "processors": "",
                     "groups": "Keyboard&Mouse",
                     "action": "Interact",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "46914aa4-94f5-466b-851b-bd373d5ab8b0",
+                    "path": "<Keyboard>/f5",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "IgnoreTraps",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "a9d4b94b-9bf0-4ea8-9494-4c12f47a4bc8",
+                    "path": "<Keyboard>/f6",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "IgnoreCollisions",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "0a8e912e-78c1-4714-8123-a102acd30996",
+                    "path": "<Keyboard>/f1",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "TeleportLevel1",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "dc926a6e-c449-4b1c-b08a-a55b9dba69f7",
+                    "path": "<Keyboard>/f2",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "TeleportLevel2",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "bcae4df3-87e2-48f3-8059-f7639857216a",
+                    "path": "<Keyboard>/f3",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "TeleportLevel3",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

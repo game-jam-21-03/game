@@ -111,6 +111,15 @@ public class Main : MonoBehaviour
 	[SerializeField, HideInInspector] Transform cameraTransform;
 	[SerializeField, HideInInspector] Transform playerTransform;
 
+	#if UNITY_EDITOR
+	// Cheats
+	[Header("Cheats")]
+	[SerializeField] GameObject Level1Location;
+	[SerializeField] GameObject Level2Location;
+	[SerializeField] GameObject Level3Location;
+	#endif
+	
+
 	public static List<Pulse> pulses;
 
 	void Awake()
@@ -195,6 +204,7 @@ public class Main : MonoBehaviour
 		float t = Time.fixedTime;
 		float dt = Time.fixedDeltaTime;
 		InputSystem.Update();
+
 
 		// Look Direction
 		{
@@ -385,7 +395,7 @@ public class Main : MonoBehaviour
 				{
 					if (!lever.triggered)
 						interactionInfoPanel.text = "I wonder if this lever might open something...";
-						
+
 					interactionInfoPanel.gameObject.SetActive(true);
 					if (inputActions.Gameplay.Interact.triggered && !lever.triggered)
 					{
@@ -491,6 +501,34 @@ public class Main : MonoBehaviour
 			}
 		}
 
+		// Cheats
+		#if UNITY_EDITOR
+		{
+			ref Vector3 p = ref state.player.position;
+			Vector3 level1p = Level1Location.transform.position;
+			level1p.y = 2.0f;
+			Vector3 level2p = Level2Location.transform.position;
+			Vector3 level3p = Level3Location.transform.position;
+
+			// Teleports
+			if (inputActions.Gameplay.TeleportLevel1.triggered)
+			{
+				playerTransform.position = level1p;
+				p = level1p;
+			}
+			if (inputActions.Gameplay.TeleportLevel2.triggered)
+			{
+				playerTransform.position = level2p;
+				p = level2p;
+			}
+			if (inputActions.Gameplay.TeleportLevel3.triggered)
+			{
+				playerTransform.position = level3p;
+				p = level3p;
+			}
+		}
+		#endif
+
 		// Downward Raycast
 		{
 			//Vector3 downVector = Vector3.up * -1;
@@ -525,11 +563,11 @@ public class Main : MonoBehaviour
 						AudioSource.PlayClipAtPoint(triggerTrap, trap.transform.position, sfxVolume);
 						playerTransform.position = state.checkpoint;
 						p = state.checkpoint;
-						for (int i = 0; i < state.trapsDisabled.Count; i++)
-						{
-							state.trapsDisabled[i].SetActive(true);
-						}
-						state.trapsDisabled.Clear();
+						// for (int i = 0; i < state.trapsDisabled.Count; i++)
+						// {
+						// 	state.trapsDisabled[i].SetActive(true);
+						// }
+						//state.trapsDisabled.Clear();
 					}
 				}
 

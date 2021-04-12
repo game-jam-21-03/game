@@ -49,6 +49,46 @@ public class @InputActions : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""IgnoreTraps"",
+                    ""type"": ""Button"",
+                    ""id"": ""ca79304a-74bb-4992-82d1-5a2ca12704da"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""IgnoreCollisions"",
+                    ""type"": ""Button"",
+                    ""id"": ""16fe9710-e6e6-4226-a5e4-7e753e588fcd"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""TeleportLevel1"",
+                    ""type"": ""Button"",
+                    ""id"": ""68e0c9e3-564b-4c36-a6ff-aebe590d6d20"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""TeleportLevel2"",
+                    ""type"": ""Button"",
+                    ""id"": ""ebc150fd-9f4a-4ffb-bda7-f7c7980a55a4"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""TeleportLevel3"",
+                    ""type"": ""Button"",
+                    ""id"": ""aaeb3c83-654f-4fa6-8785-1bf332055142"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -150,6 +190,61 @@ public class @InputActions : IInputActionCollection, IDisposable
                     ""action"": ""Interact"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""46914aa4-94f5-466b-851b-bd373d5ab8b0"",
+                    ""path"": ""<Keyboard>/f5"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""IgnoreTraps"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a9d4b94b-9bf0-4ea8-9494-4c12f47a4bc8"",
+                    ""path"": ""<Keyboard>/f6"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""IgnoreCollisions"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""0a8e912e-78c1-4714-8123-a102acd30996"",
+                    ""path"": ""<Keyboard>/f1"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""TeleportLevel1"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""dc926a6e-c449-4b1c-b08a-a55b9dba69f7"",
+                    ""path"": ""<Keyboard>/f2"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""TeleportLevel2"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""bcae4df3-87e2-48f3-8059-f7639857216a"",
+                    ""path"": ""<Keyboard>/f3"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""TeleportLevel3"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -223,6 +318,11 @@ public class @InputActions : IInputActionCollection, IDisposable
         m_Gameplay_Look = m_Gameplay.FindAction("Look", throwIfNotFound: true);
         m_Gameplay_EchoPulse = m_Gameplay.FindAction("EchoPulse", throwIfNotFound: true);
         m_Gameplay_Interact = m_Gameplay.FindAction("Interact", throwIfNotFound: true);
+        m_Gameplay_IgnoreTraps = m_Gameplay.FindAction("IgnoreTraps", throwIfNotFound: true);
+        m_Gameplay_IgnoreCollisions = m_Gameplay.FindAction("IgnoreCollisions", throwIfNotFound: true);
+        m_Gameplay_TeleportLevel1 = m_Gameplay.FindAction("TeleportLevel1", throwIfNotFound: true);
+        m_Gameplay_TeleportLevel2 = m_Gameplay.FindAction("TeleportLevel2", throwIfNotFound: true);
+        m_Gameplay_TeleportLevel3 = m_Gameplay.FindAction("TeleportLevel3", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -276,6 +376,11 @@ public class @InputActions : IInputActionCollection, IDisposable
     private readonly InputAction m_Gameplay_Look;
     private readonly InputAction m_Gameplay_EchoPulse;
     private readonly InputAction m_Gameplay_Interact;
+    private readonly InputAction m_Gameplay_IgnoreTraps;
+    private readonly InputAction m_Gameplay_IgnoreCollisions;
+    private readonly InputAction m_Gameplay_TeleportLevel1;
+    private readonly InputAction m_Gameplay_TeleportLevel2;
+    private readonly InputAction m_Gameplay_TeleportLevel3;
     public struct GameplayActions
     {
         private @InputActions m_Wrapper;
@@ -284,6 +389,11 @@ public class @InputActions : IInputActionCollection, IDisposable
         public InputAction @Look => m_Wrapper.m_Gameplay_Look;
         public InputAction @EchoPulse => m_Wrapper.m_Gameplay_EchoPulse;
         public InputAction @Interact => m_Wrapper.m_Gameplay_Interact;
+        public InputAction @IgnoreTraps => m_Wrapper.m_Gameplay_IgnoreTraps;
+        public InputAction @IgnoreCollisions => m_Wrapper.m_Gameplay_IgnoreCollisions;
+        public InputAction @TeleportLevel1 => m_Wrapper.m_Gameplay_TeleportLevel1;
+        public InputAction @TeleportLevel2 => m_Wrapper.m_Gameplay_TeleportLevel2;
+        public InputAction @TeleportLevel3 => m_Wrapper.m_Gameplay_TeleportLevel3;
         public InputActionMap Get() { return m_Wrapper.m_Gameplay; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -305,6 +415,21 @@ public class @InputActions : IInputActionCollection, IDisposable
                 @Interact.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnInteract;
                 @Interact.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnInteract;
                 @Interact.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnInteract;
+                @IgnoreTraps.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnIgnoreTraps;
+                @IgnoreTraps.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnIgnoreTraps;
+                @IgnoreTraps.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnIgnoreTraps;
+                @IgnoreCollisions.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnIgnoreCollisions;
+                @IgnoreCollisions.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnIgnoreCollisions;
+                @IgnoreCollisions.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnIgnoreCollisions;
+                @TeleportLevel1.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnTeleportLevel1;
+                @TeleportLevel1.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnTeleportLevel1;
+                @TeleportLevel1.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnTeleportLevel1;
+                @TeleportLevel2.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnTeleportLevel2;
+                @TeleportLevel2.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnTeleportLevel2;
+                @TeleportLevel2.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnTeleportLevel2;
+                @TeleportLevel3.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnTeleportLevel3;
+                @TeleportLevel3.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnTeleportLevel3;
+                @TeleportLevel3.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnTeleportLevel3;
             }
             m_Wrapper.m_GameplayActionsCallbackInterface = instance;
             if (instance != null)
@@ -321,6 +446,21 @@ public class @InputActions : IInputActionCollection, IDisposable
                 @Interact.started += instance.OnInteract;
                 @Interact.performed += instance.OnInteract;
                 @Interact.canceled += instance.OnInteract;
+                @IgnoreTraps.started += instance.OnIgnoreTraps;
+                @IgnoreTraps.performed += instance.OnIgnoreTraps;
+                @IgnoreTraps.canceled += instance.OnIgnoreTraps;
+                @IgnoreCollisions.started += instance.OnIgnoreCollisions;
+                @IgnoreCollisions.performed += instance.OnIgnoreCollisions;
+                @IgnoreCollisions.canceled += instance.OnIgnoreCollisions;
+                @TeleportLevel1.started += instance.OnTeleportLevel1;
+                @TeleportLevel1.performed += instance.OnTeleportLevel1;
+                @TeleportLevel1.canceled += instance.OnTeleportLevel1;
+                @TeleportLevel2.started += instance.OnTeleportLevel2;
+                @TeleportLevel2.performed += instance.OnTeleportLevel2;
+                @TeleportLevel2.canceled += instance.OnTeleportLevel2;
+                @TeleportLevel3.started += instance.OnTeleportLevel3;
+                @TeleportLevel3.performed += instance.OnTeleportLevel3;
+                @TeleportLevel3.canceled += instance.OnTeleportLevel3;
             }
         }
     }
@@ -376,5 +516,10 @@ public class @InputActions : IInputActionCollection, IDisposable
         void OnLook(InputAction.CallbackContext context);
         void OnEchoPulse(InputAction.CallbackContext context);
         void OnInteract(InputAction.CallbackContext context);
+        void OnIgnoreTraps(InputAction.CallbackContext context);
+        void OnIgnoreCollisions(InputAction.CallbackContext context);
+        void OnTeleportLevel1(InputAction.CallbackContext context);
+        void OnTeleportLevel2(InputAction.CallbackContext context);
+        void OnTeleportLevel3(InputAction.CallbackContext context);
     }
 }
