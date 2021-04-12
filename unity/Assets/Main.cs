@@ -93,6 +93,8 @@ public class Main : MonoBehaviour
 	[SerializeField] GUIItem[] itemImagesItemRefs;
 	[SerializeField] GameObject wonMenu;
 	[SerializeField] Image radialCooldown;
+    [SerializeField] GameObject interactIcon;
+    [SerializeField] GameObject trapMessage;
 
 	// Audio
 	[Header("Audio")]
@@ -133,6 +135,7 @@ public class Main : MonoBehaviour
 	float pulseTime = 10.0f;
 	bool pulseOnCooldown = false;
 	float cooldownTimer;
+    float trapMessageTimer;
 
 	void SetMetaState(MetaState newState)
 	{
@@ -193,6 +196,7 @@ public class Main : MonoBehaviour
 	{
 		scannableObjects = FindObjectsOfType<Scannable>();
 		cooldownTimer = abilityPulseSpec.pulseCooldown;
+        interactIcon.SetActive(false);
 		#if UNITY_EDITOR
 		traps = FindObjectsOfType<Trap>();
 		#endif
@@ -242,6 +246,11 @@ public class Main : MonoBehaviour
 		float t = Time.fixedTime;
 		float dt = Time.fixedDeltaTime;
 		InputSystem.Update();
+        trapMessageTimer += dt;
+        if (trapMessageTimer >= 3f)
+        {
+            trapMessage.SetActive(false);
+        }
 
 		// Metastate
 		{
@@ -329,7 +338,19 @@ public class Main : MonoBehaviour
 				Chest chest = hit.transform.gameObject.GetComponent<Chest>();
 				if (chest)
 				{
-					if (!state.chestsOpened.Contains(chest))
+                    foreach (var item in state.items)
+                    {
+                        if (item.itemType == ItemType.LevelKey)
+                        {
+                            // have key to open chest
+                            interactIcon.SetActive(true);
+                        }
+                        else
+                        {
+                            interactIcon.SetActive(false);
+                        }
+                    }
+                    if (!state.chestsOpened.Contains(chest))
 					{
 						interactionInfoPanel.text = "I wonder if I have a key for this..";
 						interactionInfoPanel.gameObject.SetActive(true);
@@ -377,12 +398,13 @@ public class Main : MonoBehaviour
 							}
 						}
 					}
-				}
+				} 
 
 				Boltcutter boltcutters = hit.transform.gameObject.GetComponent<Boltcutter>();
 				if (boltcutters)
 				{
-					interactionInfoPanel.text = "I can probably cut a chain with these..";
+                    interactIcon.SetActive(true);
+                    interactionInfoPanel.text = "I can probably cut a chain with these..";
 					interactionInfoPanel.gameObject.SetActive(true);
 					if (inputActions.Gameplay.Interact.triggered)
 					{
@@ -409,7 +431,14 @@ public class Main : MonoBehaviour
 				Door door = hit.transform.gameObject.GetComponent<Door>();
 				if (door)
 				{
-					interactionInfoPanel.text = "I might need some bolt cutters to get through this door..";
+                    foreach (var item in state.items)
+                    {
+                        if (item.itemType == door.item.itemType)
+                        {
+                            interactIcon.SetActive(true);
+                        }
+                    }
+                    interactionInfoPanel.text = "I might need some bolt cutters to get through this door..";
 					interactionInfoPanel.gameObject.SetActive(true);
 					if (inputActions.Gameplay.Interact.triggered)
 					{
@@ -440,12 +469,16 @@ public class Main : MonoBehaviour
 				if (lever)
 				{
 					if (!lever.triggered)
-						interactionInfoPanel.text = "I wonder if this lever might open something...";
+                    {
+                        interactionInfoPanel.text = "I wonder if this lever might open something...";
+                        interactIcon.SetActive(true);
+                    }					
 
 					interactionInfoPanel.gameObject.SetActive(true);
 					if (inputActions.Gameplay.Interact.triggered && !lever.triggered)
 					{
-						interactionInfoPanel.text = "I think I might have opened something!";
+                        interactIcon.SetActive(false);
+                        interactionInfoPanel.text = "I think I might have opened something!";
 						lever.leverAnim.SetTrigger("Opening");
 						AudioSource.PlayClipAtPoint(pullLever, lever.transform.position, sfxVolume);
 						if (lever.correctLever)
@@ -467,7 +500,8 @@ public class Main : MonoBehaviour
 						else
 						{
 							interactionInfoPanel.text = "This didn't seem to do anything..";
-						}
+                            interactIcon.SetActive(false);
+                        }
 						
 						lever.triggered = true;
 					}
@@ -478,7 +512,8 @@ public class Main : MonoBehaviour
 				{
 					if (key.item.itemEnabled)
 					{
-						interactionInfoPanel.text = "I wonder if this will open a chest..";
+                        interactIcon.SetActive(true);
+                        interactionInfoPanel.text = "I wonder if this will open a chest..";
 						interactionInfoPanel.gameObject.SetActive(true);
 						if (inputActions.Gameplay.Interact.triggered)
 						{
@@ -517,7 +552,8 @@ public class Main : MonoBehaviour
 				{
 					if (boots.item.itemEnabled)
 					{
-						interactionInfoPanel.text = "I might need these later..";
+                        interactIcon.SetActive(true);
+                        interactionInfoPanel.text = "I might need these later..";
 						interactionInfoPanel.gameObject.SetActive(true);
 						if (inputActions.Gameplay.Interact.triggered)
 						{
@@ -543,7 +579,8 @@ public class Main : MonoBehaviour
 			else
 			{
 				interactionInfoPanel.gameObject.SetActive(false);
-			}
+                interactIcon.SetActive(false);
+            }
 		}
 
 		// Cheats
@@ -616,7 +653,9 @@ public class Main : MonoBehaviour
 						AudioSource.PlayClipAtPoint(triggerTrap, trap.transform.position, sfxVolume);
 						playerTransform.position = state.checkpoint;
 						p = state.checkpoint;
-					}
+                        trapMessage.SetActive(true);
+                        trapMessageTimer = 0.0f;
+                    }
 				}
 
 				// Checkpoint
@@ -659,7 +698,9 @@ public class Main : MonoBehaviour
 			pulseTime += dt;
 			if (inputActions.Gameplay.EchoPulse.triggered)
 			{
-				pulseOnCooldown = true;
+                if (!pulseOnCooldown)
+                    cooldownTimer = 0.0f;
+                pulseOnCooldown = true;
 				Cursor.lockState = CursorLockMode.Locked;
 				float totalPulseTime = abilityPulseSpec.pulseCooldown;
 				if (pulseTime >= totalPulseTime)
@@ -675,7 +716,7 @@ public class Main : MonoBehaviour
 				cooldownTimer += dt;
 				if (cooldownTimer <= abilityPulseSpec.pulseCooldown)
 				{
-					radialCooldown.fillAmount = Mathf.Lerp(1.0f, 0.0f, cooldownTimer / abilityPulseSpec.pulseCooldown);
+					radialCooldown.fillAmount = Mathf.Lerp(0.0f, 1.0f, cooldownTimer / abilityPulseSpec.pulseCooldown);
 				}
 				else
 				{
@@ -709,6 +750,7 @@ public class Main : MonoBehaviour
 			}
 		}
 	}
+
 
 	void InitializePulseSpec(PulseSpec spec)
 	{
