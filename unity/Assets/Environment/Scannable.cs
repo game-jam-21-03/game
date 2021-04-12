@@ -24,7 +24,6 @@ public class Scannable : MonoBehaviour
 	{
 		mat.SetFloat("_EmissiveStrength", 0);
 		mat.SetInt("_HighlightOn", 1);
-		//InvokeRepeating("HighlightObject", 0.1f, 0.2f);
 		if(enableHighlight)
 			ResetLerp();
 			
@@ -71,8 +70,6 @@ public class Scannable : MonoBehaviour
 	void ResetLerp()
 	{
 		timeElapsed = outlineRef.outlineSpec.highlightDuration;
-		// currentVal = 1.0f;
-		// emissiveMax = 1.0f;
 		highlightActiveTimer = 0.0f;
 		disableTimeElapsed = 0.0f;
 	}

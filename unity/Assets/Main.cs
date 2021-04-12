@@ -438,7 +438,6 @@ public class Main : MonoBehaviour
 										break;
 									}
 								}
-								//hit.transform.gameObject.SetActive(false);
 								door.doorCollider.enabled = false;
 								interactionInfoPanel.gameObject.SetActive(false);
 								break;
@@ -508,7 +507,6 @@ public class Main : MonoBehaviour
 									break;
 								}
 							}
-							// Destroy(key.gameObject);
 							key.gameObject.SetActive(false);
 						}
 					}
@@ -596,7 +594,6 @@ public class Main : MonoBehaviour
 
 		// Downward Raycast
 		{
-			//Vector3 downVector = Vector3.up * -1;
 			ref Vector3 p = ref state.player.position;
 			Debug.DrawRay(p, Vector3.up * -1 * 2.0f, Color.green);
 			RaycastHit hit;
@@ -628,11 +625,6 @@ public class Main : MonoBehaviour
 						AudioSource.PlayClipAtPoint(triggerTrap, trap.transform.position, sfxVolume);
 						playerTransform.position = state.checkpoint;
 						p = state.checkpoint;
-						// for (int i = 0; i < state.trapsDisabled.Count; i++)
-						// {
-						// 	state.trapsDisabled[i].SetActive(true);
-						// }
-						//state.trapsDisabled.Clear();
 					}
 				}
 
