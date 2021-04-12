@@ -665,7 +665,6 @@ public class Main : MonoBehaviour
 			{
 				Cursor.lockState = CursorLockMode.Locked;
 				float totalPulseTime = abilityPulseSpec.pulseCooldown;
-				Debug.Log(totalPulseTime);
 				if (pulseTime >= totalPulseTime)
 				{
 					SendPulse(abilityPulseSpec, state.player.position, t);

@@ -16,4 +16,5 @@ MonoBehaviour:
   itemPrefab: {fileID: 0}
   material: {fileID: 2100000, guid: 2f6aadc3ec9bc24469e61e4646d1d854, type: 2}
   highlightMaterial: {fileID: 2100000, guid: 150c0b5f6874fd04b9d7d034bcb3ef82, type: 2}
-  icon: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
+  icon: {fileID: 21300000, guid: 867c50f367b1db147ab15caf61f9a7da, type: 3}
+  itemEnabled: 0
