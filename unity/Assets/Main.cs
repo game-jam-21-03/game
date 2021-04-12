@@ -117,6 +117,7 @@ public class Main : MonoBehaviour
 	[SerializeField] GameObject Level1Location;
 	[SerializeField] GameObject Level2Location;
 	[SerializeField] GameObject Level3Location;
+	Trap[] traps;
 	#endif
 	
 
@@ -158,6 +159,9 @@ public class Main : MonoBehaviour
 	void Start() 
 	{
 		scannableObjects = FindObjectsOfType<Scannable>();
+		#if UNITY_EDITOR
+		traps = FindObjectsOfType<Trap>();
+		#endif
 	}
 
 	void Update()
@@ -525,6 +529,14 @@ public class Main : MonoBehaviour
 			{
 				playerTransform.position = level3p;
 				p = level3p;
+			}
+
+			if (inputActions.Gameplay.IgnoreTraps.triggered)
+			{
+				for (int i = 0; i < traps.Length; i++)
+				{
+					traps[i].trapEnabled = false;
+				}
 			}
 		}
 		#endif
