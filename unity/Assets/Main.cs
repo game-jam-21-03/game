@@ -384,6 +384,7 @@ public class Main : MonoBehaviour
 					{
 						// add boltcutters to inventory
 						state.items.Add(boltcutters.item);
+						AudioSource.PlayClipAtPoint(pickUpBoltCutter, boltcutters.transform.position, sfxVolume);
 						for (int i = 0; i < itemImages.Length; i++)
 						{
 							if (!itemImages[i].IsActive())
