@@ -131,6 +131,7 @@ public class Main : MonoBehaviour
 	
 
 	public static List<Pulse> pulses;
+	float pulseTime = 10.0f;
 
 	void SetMetaState(MetaState newState)
 	{
@@ -666,10 +667,17 @@ public class Main : MonoBehaviour
 
 		// Pulse Behavior
 		{
+			pulseTime += dt;
 			if (inputActions.Gameplay.EchoPulse.triggered)
 			{
-				SendPulse(abilityPulseSpec, state.player.position, t);
-				pulseSoundFX.Play();
+				float totalPulseTime = abilityPulseSpec.pulseCooldown;
+				Debug.Log(totalPulseTime);
+				if (pulseTime >= totalPulseTime)
+				{
+					SendPulse(abilityPulseSpec, state.player.position, t);
+					pulseSoundFX.Play();
+					pulseTime = 0.0f;
+				}
 			}
 
 			for (int iPulse = state.pulses.Count - 1; iPulse >= 0; iPulse--)

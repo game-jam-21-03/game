@@ -15,6 +15,9 @@ public class PulseSpec : ScriptableObject
 	[Tooltip("How far the pulse will travel through the world. Units: unspecified")]
 	public float maximumTravelDistance;
 
+	[Tooltip("How long is the pulse cooldown in seconds?")]
+	public float pulseCooldown;
+
 	[NonSerialized]
 	public float maximumTravelTime;
 
