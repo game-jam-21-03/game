@@ -170,6 +170,7 @@ public class Main : MonoBehaviour
 	void Awake()
 	{
 		Cursor.visible = false;
+		Cursor.lockState = CursorLockMode.Confined;
 		inputActions = new InputActions();
 		inputActions.Gameplay.Enable();
 
@@ -662,6 +663,7 @@ public class Main : MonoBehaviour
 			pulseTime += dt;
 			if (inputActions.Gameplay.EchoPulse.triggered)
 			{
+				Cursor.lockState = CursorLockMode.Locked;
 				float totalPulseTime = abilityPulseSpec.pulseCooldown;
 				Debug.Log(totalPulseTime);
 				if (pulseTime >= totalPulseTime)
