@@ -14522,6 +14522,10 @@ PrefabInstance:
       propertyPath: grateRef
       value: 
       objectReference: {fileID: 1670113559}
+    - target: {fileID: 8796957504497575067, guid: 040a85ad93438c44da6c4486b82f9e46, type: 3}
+      propertyPath: correctLever
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 040a85ad93438c44da6c4486b82f9e46, type: 3}
 --- !u!1 &889210391

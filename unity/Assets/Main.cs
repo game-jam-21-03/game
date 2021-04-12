@@ -383,25 +383,36 @@ public class Main : MonoBehaviour
 				Lever lever = hit.transform.gameObject.GetComponent<Lever>();
 				if (lever)
 				{
-					interactionInfoPanel.text = "I wonder if this lever might open something...";
+					if (!lever.triggered)
+						interactionInfoPanel.text = "I wonder if this lever might open something...";
+						
 					interactionInfoPanel.gameObject.SetActive(true);
 					if (inputActions.Gameplay.Interact.triggered && !lever.triggered)
 					{
+						interactionInfoPanel.text = "I think I might have opened something!";
 						lever.leverAnim.SetTrigger("Opening");
 						AudioSource.PlayClipAtPoint(pullLever, lever.transform.position, sfxVolume);
-						var keyRef = lever.grateRef.itemLockedRef.GetComponent<Key>();
-						if (keyRef)
-							keyRef.item.itemEnabled = true;
+						if (lever.correctLever)
+						{
+							var keyRef = lever.grateRef.itemLockedRef.GetComponent<Key>();
+							if (keyRef)
+								keyRef.item.itemEnabled = true;
 
-						var bootRef = lever.grateRef.itemLockedRef.GetComponent<Boots>();
-						if (bootRef)
-							bootRef.item.itemEnabled = true;
+							var bootRef = lever.grateRef.itemLockedRef.GetComponent<Boots>();
+							if (bootRef)
+								bootRef.item.itemEnabled = true;
 
-						var rb = lever.grateRef.GetComponent<Rigidbody>();
-						rb.useGravity = true;
-						rb.isKinematic = false;
-						rb.AddRelativeForce(new Vector3(.0f,.10f, 100.0f));
-						lever.grateRef.showMessage = false;
+							var rb = lever.grateRef.GetComponent<Rigidbody>();
+							rb.useGravity = true;
+							rb.isKinematic = false;
+							rb.AddRelativeForce(new Vector3(.0f,.10f, 100.0f));
+							lever.grateRef.showMessage = false;
+						}
+						else
+						{
+							interactionInfoPanel.text = "This didn't seem to do anything..";
+						}
+						
 						lever.triggered = true;
 					}
 				}

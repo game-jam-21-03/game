@@ -214,6 +214,7 @@ MonoBehaviour:
   grateRef: {fileID: 0}
   triggered: 0
   leverAnim: {fileID: 5428307913000623548}
+  correctLever: 1
   meshes:
   - {fileID: 8590184752550375694}
   - {fileID: 6479504644339789970}
