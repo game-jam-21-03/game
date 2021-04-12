@@ -19,6 +19,11 @@ public struct GameState
 	public Vector3 checkpoint;
 }
 
+public enum MetaState
+{
+	Start, Playing, Won, Paused
+}
+
 public struct PlayerState
 {
 	public Vector3 velocity;
@@ -79,12 +84,16 @@ public class Main : MonoBehaviour
 	[SerializeField] CharacterController playerController;
 	[SerializeField, HideInInspector] Scannable[] scannableObjects;
 	[SerializeField] Chest[] chestRefs;
+	MetaState metaState { get; set; }
 
 	// UI
 	[Header("UI")]
 	[SerializeField] TextMeshProUGUI interactionInfoPanel;
 	[SerializeField] Image[] itemImages;
 	[SerializeField] GUIItem[] itemImagesItemRefs;
+	[SerializeField] GameObject pauseMenu;
+	[SerializeField] GameObject wonMenu;
+	[SerializeField] GameObject startMenu;
 
 	// Audio
 	[Header("Audio")]
@@ -123,6 +132,40 @@ public class Main : MonoBehaviour
 
 	public static List<Pulse> pulses;
 
+	void SetMetaState(MetaState newState)
+	{
+		metaState = newState;
+		switch (newState)
+		{
+			case MetaState.Start:
+			{
+				Time.timeScale = 0f;
+				startMenu.SetActive(true);
+				break;
+			}
+			case MetaState.Playing:
+			{
+				startMenu.SetActive(false);
+				wonMenu.SetActive(false);
+				pauseMenu.SetActive(false);
+				Time.timeScale = 1f;
+				break;
+			}
+			case MetaState.Won:
+			{
+				Time.timeScale = 0f;
+				wonMenu.SetActive(true);
+				break;
+			}
+			case MetaState.Paused:
+			{
+				Time.timeScale = 0f;
+				pauseMenu.SetActive(true);
+				break;
+			}
+		}
+	}
+
 	void Awake()
 	{
 		Cursor.visible = false;
@@ -153,6 +196,7 @@ public class Main : MonoBehaviour
 
 		state.chestsOpened = new HashSet<Chest>();
 		state.items = new List<ItemSpec>();
+		//SetMetaState(MetaState.Start);
 
 	}
 
@@ -209,6 +253,14 @@ public class Main : MonoBehaviour
 		float dt = Time.fixedDeltaTime;
 		InputSystem.Update();
 
+		// Metastate
+		{
+			// if (inputActions.Gameplay.Pause.triggered && 
+			// (metaState != MetaState.Won || metaState != MetaState.Start || metaState != MetaState.Paused))
+			// {
+
+			// }
+		}
 
 		// Look Direction
 		{

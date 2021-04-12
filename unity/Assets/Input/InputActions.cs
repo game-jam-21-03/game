@@ -89,6 +89,14 @@ public class @InputActions : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""Pause"",
+                    ""type"": ""Button"",
+                    ""id"": ""5c46ade7-2dd9-4d1f-903c-001d8d8b4d97"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -245,6 +253,17 @@ public class @InputActions : IInputActionCollection, IDisposable
                     ""action"": ""TeleportLevel3"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""31823543-45c7-4faa-b528-705f8446ebaf"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""Pause"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -323,6 +342,7 @@ public class @InputActions : IInputActionCollection, IDisposable
         m_Gameplay_TeleportLevel1 = m_Gameplay.FindAction("TeleportLevel1", throwIfNotFound: true);
         m_Gameplay_TeleportLevel2 = m_Gameplay.FindAction("TeleportLevel2", throwIfNotFound: true);
         m_Gameplay_TeleportLevel3 = m_Gameplay.FindAction("TeleportLevel3", throwIfNotFound: true);
+        m_Gameplay_Pause = m_Gameplay.FindAction("Pause", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -381,6 +401,7 @@ public class @InputActions : IInputActionCollection, IDisposable
     private readonly InputAction m_Gameplay_TeleportLevel1;
     private readonly InputAction m_Gameplay_TeleportLevel2;
     private readonly InputAction m_Gameplay_TeleportLevel3;
+    private readonly InputAction m_Gameplay_Pause;
     public struct GameplayActions
     {
         private @InputActions m_Wrapper;
@@ -394,6 +415,7 @@ public class @InputActions : IInputActionCollection, IDisposable
         public InputAction @TeleportLevel1 => m_Wrapper.m_Gameplay_TeleportLevel1;
         public InputAction @TeleportLevel2 => m_Wrapper.m_Gameplay_TeleportLevel2;
         public InputAction @TeleportLevel3 => m_Wrapper.m_Gameplay_TeleportLevel3;
+        public InputAction @Pause => m_Wrapper.m_Gameplay_Pause;
         public InputActionMap Get() { return m_Wrapper.m_Gameplay; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -430,6 +452,9 @@ public class @InputActions : IInputActionCollection, IDisposable
                 @TeleportLevel3.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnTeleportLevel3;
                 @TeleportLevel3.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnTeleportLevel3;
                 @TeleportLevel3.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnTeleportLevel3;
+                @Pause.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnPause;
+                @Pause.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnPause;
+                @Pause.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnPause;
             }
             m_Wrapper.m_GameplayActionsCallbackInterface = instance;
             if (instance != null)
@@ -461,6 +486,9 @@ public class @InputActions : IInputActionCollection, IDisposable
                 @TeleportLevel3.started += instance.OnTeleportLevel3;
                 @TeleportLevel3.performed += instance.OnTeleportLevel3;
                 @TeleportLevel3.canceled += instance.OnTeleportLevel3;
+                @Pause.started += instance.OnPause;
+                @Pause.performed += instance.OnPause;
+                @Pause.canceled += instance.OnPause;
             }
         }
     }
@@ -521,5 +549,6 @@ public class @InputActions : IInputActionCollection, IDisposable
         void OnTeleportLevel1(InputAction.CallbackContext context);
         void OnTeleportLevel2(InputAction.CallbackContext context);
         void OnTeleportLevel3(InputAction.CallbackContext context);
+        void OnPause(InputAction.CallbackContext context);
     }
 }
