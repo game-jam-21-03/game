@@ -6,3 +6,5 @@
 /unity/*.csproj
 /unity/*.sln
 **.DS_Store
+Build
+WebBuild
